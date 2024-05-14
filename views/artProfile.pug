@@ -1,0 +1,48 @@
+html(lang='en')
+ head
+   title Art Profile
+   style
+      include styles.css
+ body
+ -let importedData = database;
+   div#links 
+    a(href="/logout") Logout 
+    a(href="/login") Home
+    a(href="/swapAccounts") Switch Accounts (Current Account Type: #{accountType}) 
+    a(href="/searchArtwork") Search for Art:
+    a(href="/viewLikedandReviewed") View Liked and Reviewed Art
+    a(href="/inbox") Notifications: #{notificationCount}
+    -if(accountType == "artist")
+      a(href="/addNewArt") Add New Art
+      a(href="/addWorkshop") Add Workshop
+    -if(admin == "true")
+      a(href="/viewers") See Users
+    a(href=`/profile/${id}`) View Profile
+   h1 Art Info:
+   h2 Title of Artwork: #{importedData[0].Title}
+   img(src = `${importedData[0].Poster}` alt="Art Image")
+   p Artist Name:
+    a(href = `/profile/${accountId[0]._id}`) #{importedData[0].Artist}
+   p Breif Description: #{importedData[0].Description}
+   p Category: 
+    a(href=`/searchCategory/${importedData[0].Category}?page=1`) #{importedData[0].Category}
+   p Medium of Use:
+    a(href=`/searchMedium/${importedData[0].Medium}?page=1`) #{importedData[0].Medium}
+   p Likes: #{importedData[0].Likes}
+   h2 Reviews:
+   each review in importedData[0].Reviews
+    p #{review.name} : #{review.review}
+   -if(accountId[0]._id != id)
+     button(type = "button" onclick=`addLike('${importedData[0]._id} ')`) Like Image
+     form(action=`/leaveReview/${importedData[0]._id}` method="POST")  
+      label(for="review") Review: 
+      input(type="text" name="review" required)
+      br
+      button(type="submit") Leave Review
+
+     
+ script(src="/client.js") 
+
+ 
+
+

@@ -1,0 +1,23 @@
+html(lang='en')
+ head
+   title Welcome
+   style
+      include styles.css
+-let newData = database;
+ body
+   div#links 
+    a(href="/") Home 
+    a(href="/loginScreen") Log In Here
+   div#main
+    div#left
+        h1 Welcome! 
+        p I have created a website that simulates an art gallery social media website. 
+    div#middle
+       h1 A small taste of what's to come: 
+       each value in database 
+          h2 #{value.Title}
+          p Name of artist: #{value.Artist}
+          img(src = `${value.Poster}` alt="Preview Image.")
+
+
+

@@ -1,0 +1,43 @@
+// You are here to add new art.
+html(lang='en')
+ head
+   title Add New Art
+   style
+      include styles.css
+ body
+   div#links 
+    a(href="/logout") Logout 
+    a(href="/login") Home
+    a(href="/swapAccounts") Switch Accounts (Current Account Type: #{accountType}) 
+    a(href="/searchArtwork") Search for Art:
+    a(href="/viewLikedandReviewed") View Liked and Reviewed Art
+    a(href="/inbox") Notifications: #{notificationCount}
+    -if(accountType == "artist")
+      a(href="/addNewArt") Add New Art
+      a(href="/addWorkshop") Add Workshop
+    -if(admin == "true")
+      a(href="/viewers") See Users
+    a(href=`/profile/${id}`) View Profile
+   h1 Add New Artwork Here: 
+   form(action="/addNewArt" method="POST") 
+    br
+    label(for="title") Title of Artwork: 
+    input(type="text" name="title" required)
+    br
+    label(for="category") Category of Artwork: 
+    input(type="text" name="category" required)
+    br
+    label(for="year") Year Made: 
+    input(type="text" name="year" required)
+    br
+    label(for="medium") Medium used to Make Artwork: 
+    input(type="text" name="medium" required)
+    br
+    label(for="description") Breif Description: 
+    input(type="text" name="description" required)
+    br
+    label(for="url") Image URL: 
+    input(type="text" name="url" required)
+    br
+    button(type="submit") Add Art
+

@@ -1,0 +1,30 @@
+html(lang='en')
+ head
+   title Viewer List
+   style
+      include styles.css
+ body
+ -let dataValue = database;
+   div#links 
+    a(href="/logout") Logout 
+    a(href="/login") Home 
+    a(href="/swapAccounts") Switch Accounts (Current Account Type: #{accountType}) 
+    a(href="/searchArtwork") Search for Art:
+    a(href="/viewLikedandReviewed") View Liked and Reviewed Art
+    -if(accountType == "artist")
+      a(href="/addNewArt") Add New Art
+      a(href="/addWorkshop") Add Workshop
+    -if(admin == "true")
+      a(href="/viewers") See Users
+    a(href=`/profile/${id}`) View Profile
+   div#main
+    div#left
+        h1 Viewer List:
+        ul
+            each value in database 
+                li Username: #{value.username} 
+                li Password: #{value.password}
+                li Account Type: #{value.accountType}
+                br
+
+            

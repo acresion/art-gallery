@@ -1,0 +1,27 @@
+//view followers here.
+
+html(lang='en')
+ head
+   title Followers List
+   style
+      include styles.css
+ body
+  -let dataInto = database;
+   div#links 
+    a(href="/logout") Logout 
+    a(href="/login") Home
+    a(href="/swapAccounts") Switch Accounts (Current Account Type: #{accountType}) 
+    a(href="/searchArtwork") Search for Art:
+    a(href="/viewLikedandReviewed") View Liked and Reviewed Art
+    a(href="/inbox") Notifications: #{notificationCount}
+    -if(accountType == "artist")
+      a(href="/addNewArt") Add New Art
+      a(href="/addWorkshop") Add Workshop
+    -if(admin == "true")
+      a(href="/viewers") See Users
+    a(href=`/profile/${id}`) View Profile
+   h1 Followers List:
+   ul
+    each follower in dataInto[0].followers
+      li #{follower.username}
+      a(href = `/profile/${follower._id}`) Link to Profile.

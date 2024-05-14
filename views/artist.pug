@@ -1,0 +1,34 @@
+// view liked and reviewed art here.
+//view followers here.
+
+html(lang='en')
+ head
+   title Artwork Liked and Reviewed
+   style
+      include styles.css
+ body
+ -let database1 = database;
+   div#links
+    a(href="/logout") Logout
+    a(href="/login") Home
+    a(href="/swapAccounts") Switch Accounts (Current Account Type: #{accountType}) 
+    a(href="/searchArtwork") Search for Art:
+    a(href="/viewLikedandReviewed") View Liked and Reviewed Art
+    a(href="/inbox") Notifications: #{notificationCount}
+    -if(accountType == "artist")
+      a(href="/addNewArt") Add New Art
+      a(href="/addWorkshop") Add Workshop
+    -if(admin == "true")
+      a(href="/viewers") See Users
+    a(href=`/profile/${id}`) View Profile
+   h1 Artwork you Liked and Reviewed:
+   h2 Liked Work: 
+   each review in database1.artWorkLiked 
+    li #{review.title}
+    button(type = "button" onclick=`removeLike('${review.title}')`) Remove Like
+   h2 Reviewed Work:
+   each review in database1.artWorkReviewed 
+    li #{review.artWorkTitle} : #{review.review}
+    button(type = "button" onclick=`removeReview('${review.artWorkTitle}' , '${review.review}')`) Remove Review
+ script(src="/client.js") 
+ 

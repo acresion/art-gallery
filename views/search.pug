@@ -1,0 +1,33 @@
+html(lang='en')
+ head
+   title Search for Artwork
+   style
+      include styles.css
+ body
+   div#links 
+    a(href="/logout") Logout 
+    a(href="/login") Home
+    a(href="/swapAccounts") Switch Accounts (Current Account Type: #{accountType}) 
+    a(href="/searchArtwork") Search for Art:
+    a(href="/viewLikedandReviewed") View Liked and Reviewed Art
+    a(href="/inbox") Notifications: #{notificationCount}
+    -if(accountType == "artist")
+      a(href="/addNewArt") Add New Art
+      a(href="/addWorkshop") Add Workshop
+    -if(admin == "true")
+      a(href="/viewers") See Users
+    a(href=`/profile/${id}`) View Profile
+    h1 Search Here:
+    form(action=`/findSearchResults?page=1` method="POST")
+      br
+      label(for="nameOfArtist") Name of Artist: 
+      input(type="text" name="nameOfArtist")
+      br
+      label(for="title") Title of Artwork: 
+      input(type="text" name="title")
+      br
+      label(for="category") Category of Artwork: 
+      input(type="text" name="category")
+      br
+      button(type="submit") Search
+

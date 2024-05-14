@@ -1,0 +1,60 @@
+// You are just here for the artist profile.
+
+html(lang='en')
+ head
+   title Profile
+   style
+      include styles.css
+ body
+ -let importedData = database;
+   div#links 
+    a(href="/logout") Logout 
+    a(href="/login") Home
+    a(href="/swapAccounts") Switch Accounts (Current Account Type: #{accountType}) 
+    a(href="/searchArtwork") Search for Art:
+    a(href="/viewLikedandReviewed") View Liked and Reviewed Art
+    a(href="/inbox") Notifications: #{notificationCount}
+    -if(accountType == "artist")
+      a(href="/addNewArt") Add New Art
+      a(href="/addWorkshop") Add Workshop
+    -if(admin == "true")
+      a(href="/viewers") See Users
+    a(href=`/profile/${id}`) View Profile
+
+   div#main     
+    div#left
+       h1  #{importedData[0].username}
+       br
+       br
+       br
+       h2 Follower Statistics:
+       a(href=`/viewFollowers/${userId}`) Followers:#{importedData[0].followersCount}
+       a(href=`/viewFollowing/${userId}`) Following:#{importedData[0].followingCount}
+       br 
+       -if(userId != id)
+            button(type = "button" onclick=`sendFollower("${userId}")`) Follow Account
+       br
+       h2 Art Made by Account:
+       each value in importedData[0].artMade
+           h2  Title: #{value.Title}
+           // Unfortunately, our array does in fact, not store the ID anywhere. Fortunately, we have a backup in the form of the title. THe title is unique, so we can get away with this.
+           -let artId = value.Title;
+           a(href = `/artwork/${artId}`) View Artwork Here:
+           img(src = `${value.Poster}` alt="Preview Image.")
+       h2 Workshops by Account:
+       each value in importedData[0].workshops
+          h3  #{value.title}
+          -if(userId != id)
+            button(type="button" onclick=`enroll('${value.title}', '${userId}')`) Enroll In Workshop
+            a(href=`/viewEnrolled/${value.title}/${userId}`) View All Who Enrolled
+
+   script(src="/client.js") 
+ 
+
+
+
+
+
+
+
+

@@ -1,0 +1,37 @@
+html(lang='en')
+ head
+   title Search Results
+   style
+      include styles.css
+ body
+   -let datag = database;
+   div#links 
+    a(href="/logout") Logout 
+    a(href="/login") Home
+    a(href="/swapAccounts") Switch Accounts (Current Account Type: #{accountType}) 
+    a(href="/searchArtwork") Search for Art:
+    a(href="/viewLikedandReviewed") View Liked and Reviewed Art
+    a(href="/inbox") Notifications: #{notificationCount}
+    -if(accountType == "artist")
+      a(href="/addNewArt") Add New Art
+      a(href="/addWorkshop") Add Workshop
+    -if(admin == "true")
+      a(href="/viewers") See Users
+    a(href=`/profile/${id}`) View Profile
+   div#main
+    div#left 
+        h1 Search Results: 
+        -let count = 0;
+        -if(page < totalPage)
+            button(type="button" onclick=`location.href = '/findSearchResults?page=${nextPage}&nameOfArtist=${nameOfArtist}&title=${title}&category=${category}'`)  Next Section
+        -if(page > 1)
+            button(type="button" onclick=`location.href = '/findSearchResults?page=${prevPage}&nameOfArtist=${nameOfArtist}&title=${title}&category=${category}'`)  Previous Section
+        each value in database 
+            -if(count >= (page-1) * 10 && count <= 10* page - 1)
+                h1 #{value.Title}
+                img(src=`${value.Poster}` alt= "Image from Search")
+                a(href = `/artwork/${value.Title}`) View Artwork Here:
+            -count++;
+
+
+ 
