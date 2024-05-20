@@ -2,7 +2,7 @@
 
 var _express = _interopRequireDefault(require("express"));
 
-var _expressSession = _interopRequireDefault(require("express-session"));
+var _cookieSession = _interopRequireDefault(require("cookie-session"));
 
 var _mongodb = require("mongodb");
 
@@ -23,7 +23,7 @@ var accountInfo = database.collection("accounts"); // Create a new client and co
 // There are additional options that are useful
 // Check documentation for express-session module
 
-app.use((0, _expressSession["default"])({
+app.use((0, _cookieSession["default"])({
   secret: 'some secret here',
   //cookie: {maxAge:50000},  //the cookie will expire in 50 seconds
   resave: true,
