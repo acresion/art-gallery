@@ -1,6 +1,6 @@
 
 import express from 'express';
-import session from 'express-session';
+import session from 'cookie-session';
 const app = express();
 app.set("views", "views");
 app.use(express.static("views"));
