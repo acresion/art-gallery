@@ -35,7 +35,8 @@ response:
 }
 ```
 ### List book details 
-GET: /libraries/{libraryId}/books/{bookId}
+
+`GET: /libraries/{libraryId}/books/{bookId}`
 
 response:
 ```json 
