@@ -15,6 +15,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag art-gallery:$(date +%s)
-    - name: Retag as latest
-      run: docker images
+      run: docker build . -t acresion/kubernetes-learning:latest
+    - name: push the image
+      run: |
+        docker login -u acresion -p ${{secrets.DOCKER_HUB_TOKEN}}
+        docker push acresion/kubernetes-learning:latest
+    
+      
+  
