@@ -15,11 +15,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . -t acresion/kubernetes-learning:latest
+      run: docker build . -t acresion/art-gallery:latest
     - name: push the image
       run: |
         docker login -u acresion -p ${{secrets.DOCKER_HUB_TOKEN}}
-        docker push acresion/kubernetes-learning:latest
+        docker push acresion/art-gallery:latest
     
       
   
