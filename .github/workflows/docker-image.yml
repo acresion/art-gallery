@@ -15,11 +15,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . -t acresion/art-gallery:latest
+      run: | 
+        docker build . -t acresion/art-gallery:latest
+        docker build . -t acresion/art-gallery:1.0.${{github.run_number}}
+
     - name: push the image
       run: |
         docker login -u acresion -p ${{secrets.DOCKER_HUB_TOKEN}}
         docker push acresion/art-gallery:latest
+        docker push acresion/art-gallery:1.0.${{github.run_number}}
     
       
   
