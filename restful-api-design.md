@@ -51,7 +51,7 @@ response:
 }
 ```
 ### Add book to library
-POST: /libraries/{libraryId}/books
+`POST: /libraries/{libraryId}/books`
 
 Payload
 
