@@ -540,7 +540,7 @@ async function swapAccounts(req, res, next) {
 app.get("/", async function(req, res, next){
 	const data1 = await galleryCollection.find({}).limit(5).toArray();
 	console.log(data1);
-	console.log("Welcome to the art gallery. Enjoy your time here.");
+	console.log("Welcome to the art gallery. ");
 	res.render("welcome", {database:data1});
 })
 app.get("/addWorkshop", async function(req, res, next){
