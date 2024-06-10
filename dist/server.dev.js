@@ -17,6 +17,10 @@ console.log("Successfully imported mongodb"); // Replace the uri string with you
 
 var uri = "mongodb://127.0.0.1:27017/";
 var client = new _mongodb.MongoClient(uri);
+client.on('error', function (err) {
+  console.log(err.message);
+  throw new Error('Aborting execution');
+});
 console.log("Successfully connected to mongodb");
 var database = client.db("gallery");
 var galleryCollection = database.collection("artwork");
