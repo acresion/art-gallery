@@ -3,12 +3,11 @@ kind: Service
 metadata:
  name: art-gallery-service
 spec:
-  type: NodePort
   ports:
   - port: 3000
     targetPort: 3000
   selector:
-    app: art-gallery-gui
+    app: art-gallery
 
 
 #try different ports, maybe try starting a shell in the0 pod, and use curl

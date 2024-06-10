@@ -129,4 +129,5 @@ status codes:
 404  (book or library ID doesn't exist)
 
 
-
+# first, ensure a way to connect to mongodb without relying on 127.0.0.1.27017 using hostname
+# tomorrow: alter the deployment files to add a mongo db name and port number, connect back to the deployment via server

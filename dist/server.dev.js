@@ -12,9 +12,12 @@ var app = (0, _express["default"])();
 app.set("views", "views");
 app.use(_express["default"]["static"]("views"));
 app.set("view engine", "pug");
-// Replace the uri string with your MongoDB deployment's connection string.
+console.log("Beginning import");
+console.log("Successfully imported mongodb"); // Replace the uri string with your MongoDB deployment's connection string.
+
 var uri = "mongodb://127.0.0.1:27017/";
 var client = new _mongodb.MongoClient(uri);
+console.log("Successfully connected to mongodb");
 var database = client.db("gallery");
 var galleryCollection = database.collection("artwork");
 var accountInfo = database.collection("accounts"); // Create a new client and connect to MongoDB
@@ -1848,11 +1851,12 @@ app.get("/", function _callee2(req, res, next) {
         case 2:
           data1 = _context26.sent;
           console.log(data1);
+          console.log("Welcome to the art gallery. Enjoy your time here");
           res.render("welcome", {
             database: data1
           });
 
-        case 5:
+        case 6:
         case "end":
           return _context26.stop();
       }
