@@ -12,7 +12,7 @@ console.log("Successfully imported mongodb");
 // Replace the uri string with your MongoDB deployment's connection string.
 const uri = "mongodb://127.0.0.1:27017/";
 const client = new MongoClient(uri);
-// apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that 
+// apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that the error message will still get thrown. Need to check if it's coming from the functions itself
 client.on('error', function(err){
 	console.log(err.message);
 	throw new Error('Aborting execution');
