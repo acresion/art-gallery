@@ -12,8 +12,11 @@ console.log("Successfully imported mongodb");
 // Replace the uri string with your MongoDB deployment's connection string.
 const uri = "mongodb://127.0.0.1:27017/";
 const client = new MongoClient(uri);
+client.on('error', function(err){
+	console.log(err.message);
+	throw new Error('Aborting execution');
+});
 console.log("Successfully connected to mongodb");
-
 const database = client.db("gallery");
 const galleryCollection = database.collection("artwork");
 const accountInfo = database.collection("accounts");
