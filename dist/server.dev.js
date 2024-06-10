@@ -16,7 +16,8 @@ console.log("Beginning import");
 console.log("Successfully imported mongodb"); // Replace the uri string with your MongoDB deployment's connection string.
 
 var uri = "mongodb://127.0.0.1:27017/";
-var client = new _mongodb.MongoClient(uri);
+var client = new _mongodb.MongoClient(uri); // apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that 
+
 client.on('error', function (err) {
   console.log(err.message);
   throw new Error('Aborting execution');
@@ -1849,10 +1850,11 @@ app.get("/", function _callee2(req, res, next) {
     while (1) {
       switch (_context26.prev = _context26.next) {
         case 0:
-          _context26.next = 2;
+          console.log("Another trace to main. This is a check to ensure this gets this function, and if not, we throw an error");
+          _context26.next = 3;
           return regeneratorRuntime.awrap(galleryCollection.find({}).limit(5).toArray());
 
-        case 2:
+        case 3:
           data1 = _context26.sent;
           console.log(data1);
           console.log("Welcome to the art gallery. Enjoy your time here");
@@ -1860,7 +1862,7 @@ app.get("/", function _callee2(req, res, next) {
             database: data1
           });
 
-        case 6:
+        case 7:
         case "end":
           return _context26.stop();
       }
