@@ -5,7 +5,6 @@ const app = express();
 app.set("views", "views");
 app.use(express.static("views"));
 app.set("view engine", "pug");
-var process = require("process")
 // First task: Use error handling to report error of faulty connection instead of crashing. 
 console.log("Beginning import");
 import { MongoClient, ObjectId } from "mongodb";
@@ -656,12 +655,6 @@ async function logout(req, res, next) {
 		res.status(200).send("You cannot log out because you aren't logged in.");
 	}
 }
-//process use
-process.on('SIGINT', () => {
-  console.info("Interrupted");
-  process.exit(0);
-})
-
 
 app.listen(3000);
 console.log("Server listening on port 3000");
