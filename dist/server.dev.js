@@ -12,11 +12,15 @@ var app = (0, _express["default"])();
 app.set("views", "views");
 app.use(_express["default"]["static"]("views"));
 app.set("view engine", "pug");
+
+var process = require("process"); // First task: Use error handling to report error of faulty connection instead of crashing. 
+
+
 console.log("Beginning import");
 console.log("Successfully imported mongodb"); // Replace the uri string with your MongoDB deployment's connection string.
 
 var uri = "mongodb://127.0.0.1:27017/";
-var client = new _mongodb.MongoClient(uri); // apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that 
+var client = new _mongodb.MongoClient(uri); // apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that the error message will still get thrown. Need to check if it's coming from the functions itself
 
 client.on('error', function (err) {
   console.log(err.message);
@@ -2145,7 +2149,12 @@ function logout(req, res, next) {
       }
     }
   });
-}
+} //process use
 
+
+process.on('SIGINT', function () {
+  console.info("Interrupted");
+  process.exit('0');
+});
 app.listen(3000);
 console.log("Server listening on port 3000");
