@@ -657,6 +657,10 @@ async function logout(req, res, next) {
 	}
 }
 //process use
+process.on('SIGINT', () => {
+  console.info("Interrupted");
+  process.exit(0);
+})
 
 
 app.listen(3000);
