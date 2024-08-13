@@ -5,6 +5,8 @@ const app = express();
 app.set("views", "views");
 app.use(express.static("views"));
 app.set("view engine", "pug");
+var process = require("process")
+// First task: Use error handling to report error of faulty connection instead of crashing. 
 console.log("Beginning import");
 import { MongoClient, ObjectId } from "mongodb";
 console.log("Successfully imported mongodb");
@@ -12,8 +14,12 @@ console.log("Successfully imported mongodb");
 // Replace the uri string with your MongoDB deployment's connection string.
 const uri = "mongodb://127.0.0.1:27017/";
 const client = new MongoClient(uri);
+// apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that the error message will still get thrown. Need to check if it's coming from the functions itself
+client.on('error', function(err){
+	console.log(err.message);
+	throw new Error('Aborting execution');
+});
 console.log("Successfully connected to mongodb");
-
 const database = client.db("gallery");
 const galleryCollection = database.collection("artwork");
 const accountInfo = database.collection("accounts");
@@ -542,6 +548,7 @@ async function swapAccounts(req, res, next) {
  	
 }
 app.get("/", async function(req, res, next){
+	console.log("Another trace to main. This is a check to ensure this gets this function, and if not, we throw an error");
 	const data1 = await galleryCollection.find({}).limit(5).toArray();
 	console.log(data1);
 	console.log("Welcome to the art gallery. Enjoy your time here");
@@ -649,6 +656,12 @@ async function logout(req, res, next) {
 		res.status(200).send("You cannot log out because you aren't logged in.");
 	}
 }
+//process use
+process.on('SIGINT', () => {
+  console.info("Interrupted");
+  process.exit(0);
+})
+
 
 app.listen(3000);
 console.log("Server listening on port 3000");

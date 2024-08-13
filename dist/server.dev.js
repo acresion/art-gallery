@@ -12,11 +12,20 @@ var app = (0, _express["default"])();
 app.set("views", "views");
 app.use(_express["default"]["static"]("views"));
 app.set("view engine", "pug");
+
+var process = require("process"); // First task: Use error handling to report error of faulty connection instead of crashing. 
+
+
 console.log("Beginning import");
 console.log("Successfully imported mongodb"); // Replace the uri string with your MongoDB deployment's connection string.
 
 var uri = "mongodb://127.0.0.1:27017/";
-var client = new _mongodb.MongoClient(uri);
+var client = new _mongodb.MongoClient(uri); // apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that the error message will still get thrown. Need to check if it's coming from the functions itself
+
+client.on('error', function (err) {
+  console.log(err.message);
+  throw new Error('Aborting execution');
+});
 console.log("Successfully connected to mongodb");
 var database = client.db("gallery");
 var galleryCollection = database.collection("artwork");
@@ -1845,10 +1854,11 @@ app.get("/", function _callee2(req, res, next) {
     while (1) {
       switch (_context26.prev = _context26.next) {
         case 0:
-          _context26.next = 2;
+          console.log("Another trace to main. This is a check to ensure this gets this function, and if not, we throw an error");
+          _context26.next = 3;
           return regeneratorRuntime.awrap(galleryCollection.find({}).limit(5).toArray());
 
-        case 2:
+        case 3:
           data1 = _context26.sent;
           console.log(data1);
           console.log("Welcome to the art gallery. Enjoy your time here");
@@ -1856,7 +1866,7 @@ app.get("/", function _callee2(req, res, next) {
             database: data1
           });
 
-        case 6:
+        case 7:
         case "end":
           return _context26.stop();
       }
@@ -2139,7 +2149,12 @@ function logout(req, res, next) {
       }
     }
   });
-}
+} //process use
 
+
+process.on('SIGINT', function () {
+  console.info("Interrupted");
+  process.exit('0');
+});
 app.listen(3000);
 console.log("Server listening on port 3000");
