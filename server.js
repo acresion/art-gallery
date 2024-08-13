@@ -16,7 +16,8 @@ const client = new MongoClient(uri);
 // apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that the error message will still get thrown. Need to check if it's coming from the functions itself
 client.on('error', function(err){
 	console.log(err.message);
-	throw new Error('Aborting execution');
+	
+	//throw new Error('Aborting execution');
 });
 console.log("Successfully connected to mongodb");
 const database = client.db("gallery");
@@ -652,7 +653,7 @@ async function logout(req, res, next) {
 		req.session.admin = undefined;
 		res.redirect("/");
 	} else {
-		res.status(200).send("You cannot log out because you aren't logged in.");
+		res.status(401).send("You cannot log out because you aren't logged in.");
 	}
 }
 
