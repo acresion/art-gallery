@@ -27,4 +27,4 @@ spec:
             memory: 1Gi        
         ports:
         - containerPort: 3000
-       // One option could be that we simply just change all of the ports through the deployment to match the mongoDB port, but thee local port listens to 3000. I need to talk to Dad about this
+ 
