@@ -11,15 +11,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var app = (0, _express["default"])();
 app.set("views", "views");
 app.use(_express["default"]["static"]("views"));
-app.set("view engine", "pug");
-
-var process = require("process"); // First task: Use error handling to report error of faulty connection instead of crashing. 
-
+app.set("view engine", "pug"); // First task: Use error handling to report error of faulty connection instead of crashing. 
 
 console.log("Beginning import");
 console.log("Successfully imported mongodb"); // Replace the uri string with your MongoDB deployment's connection string.
 
-var uri = "mongodb://127.0.0.1:27017/";
+var uri = "mongodb://129.0.0.1:27017/"; // Experimental code that can be used to error check.
+
 var client = new _mongodb.MongoClient(uri); // apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that the error message will still get thrown. Need to check if it's coming from the functions itself
 
 client.on('error', function (err) {
@@ -70,43 +68,44 @@ function viewFollowing(req, res, next) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
+          _context.prev = 0;
           id = req.params.userId;
 
           if (!(id.length != 24)) {
-            _context.next = 5;
+            _context.next = 6;
             break;
           }
 
           res.status(406).send("Not a proper user ID");
-          _context.next = 17;
+          _context.next = 18;
           break;
 
-        case 5:
-          _context.next = 7;
+        case 6:
+          _context.next = 8;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.params.userId)
           }).toArray());
 
-        case 7:
+        case 8:
           data1 = _context.sent;
           console.log(data1[0]);
 
           if (!(data1[0] == undefined)) {
-            _context.next = 13;
+            _context.next = 14;
             break;
           }
 
           res.status(400).send("Can't find anyone  in database");
-          _context.next = 17;
+          _context.next = 18;
           break;
 
-        case 13:
-          _context.next = 15;
+        case 14:
+          _context.next = 16;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 15:
+        case 16:
           data2 = _context.sent;
           res.render("following", {
             database: data1,
@@ -116,12 +115,21 @@ function viewFollowing(req, res, next) {
             notificationCount: data2[0].notificationsCount
           });
 
-        case 17:
+        case 18:
+          _context.next = 23;
+          break;
+
+        case 20:
+          _context.prev = 20;
+          _context.t0 = _context["catch"](0);
+          res.status(500).send("Server error " + _context.t0);
+
+        case 23:
         case "end":
           return _context.stop();
       }
     }
-  });
+  }, null, null, [[0, 20]]);
 } // Essentially, we are calling itself again and again, just with updated page numbers, and thus, updated artwork
 
 
@@ -133,138 +141,139 @@ function getSearchResults(req, res, next) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
+          _context2.prev = 0;
           data1 = []; // I apologize for the YandereDev coding practice, but it had to be done.
 
           if (!(req.query.nameOfArtist == "" && req.query.title == "" && req.query.category == "")) {
-            _context2.next = 7;
+            _context2.next = 8;
             break;
           }
 
-          _context2.next = 4;
+          _context2.next = 5;
           return regeneratorRuntime.awrap(galleryCollection.find().toArray());
 
-        case 4:
+        case 5:
           data1 = _context2.sent;
-          _context2.next = 46;
+          _context2.next = 47;
           break;
 
-        case 7:
+        case 8:
           if (!(req.query.nameOfArtist == "" && req.query.category == "")) {
-            _context2.next = 13;
+            _context2.next = 14;
             break;
           }
 
-          _context2.next = 10;
+          _context2.next = 11;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Title": req.query.title
           }).toArray());
 
-        case 10:
+        case 11:
           data1 = _context2.sent;
-          _context2.next = 46;
+          _context2.next = 47;
           break;
 
-        case 13:
+        case 14:
           if (!(req.query.title == "" && req.query.category == "")) {
-            _context2.next = 19;
+            _context2.next = 20;
             break;
           }
 
-          _context2.next = 16;
+          _context2.next = 17;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Artist": req.query.nameOfArtist
           }).toArray());
 
-        case 16:
+        case 17:
           data1 = _context2.sent;
-          _context2.next = 46;
+          _context2.next = 47;
           break;
 
-        case 19:
+        case 20:
           if (!(req.query.nameOfArtist == "" && req.query.title == "")) {
-            _context2.next = 25;
+            _context2.next = 26;
             break;
           }
 
-          _context2.next = 22;
+          _context2.next = 23;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Category": req.query.category
           }).toArray());
 
-        case 22:
+        case 23:
           data1 = _context2.sent;
-          _context2.next = 46;
+          _context2.next = 47;
           break;
 
-        case 25:
+        case 26:
           if (!(req.query.title == "")) {
-            _context2.next = 31;
+            _context2.next = 32;
             break;
           }
 
-          _context2.next = 28;
+          _context2.next = 29;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Artist": req.query.nameOfArtist,
             "Category": req.query.category
           }).toArray());
 
-        case 28:
+        case 29:
           data1 = _context2.sent;
-          _context2.next = 46;
+          _context2.next = 47;
           break;
 
-        case 31:
+        case 32:
           if (!(req.query.category == "")) {
-            _context2.next = 37;
+            _context2.next = 38;
             break;
           }
 
-          _context2.next = 34;
+          _context2.next = 35;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Artist": req.query.nameOfArtist,
             "Title": req.query.title
           }).toArray());
 
-        case 34:
+        case 35:
           data1 = _context2.sent;
-          _context2.next = 46;
+          _context2.next = 47;
           break;
 
-        case 37:
+        case 38:
           if (!(req.query.nameOfArtist == "")) {
-            _context2.next = 43;
+            _context2.next = 44;
             break;
           }
 
-          _context2.next = 40;
+          _context2.next = 41;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Category": req.query.category,
             "Title": req.query.title
           }).toArray());
 
-        case 40:
+        case 41:
           data1 = _context2.sent;
-          _context2.next = 46;
+          _context2.next = 47;
           break;
 
-        case 43:
-          _context2.next = 45;
+        case 44:
+          _context2.next = 46;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Artist": req.query.nameOfArtist,
             "Category": req.query.category,
             "Title": req.query.title
           }).toArray());
-
-        case 45:
-          data1 = _context2.sent;
 
         case 46:
-          _context2.next = 48;
+          data1 = _context2.sent;
+
+        case 47:
+          _context2.next = 49;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 48:
+        case 49:
           data2 = _context2.sent;
           totalPages = data1.length / 10;
           pageValue = parseInt(req.query.page);
@@ -284,13 +293,20 @@ function getSearchResults(req, res, next) {
             nextPage: pageAdd,
             prevPage: pageSub
           });
+          _context2.next = 60;
+          break;
 
-        case 54:
+        case 57:
+          _context2.prev = 57;
+          _context2.t0 = _context2["catch"](0);
+          res.status(500).send("Server error " + _context2.t0);
+
+        case 60:
         case "end":
           return _context2.stop();
       }
     }
-  });
+  }, null, null, [[0, 57]]);
 }
 
 app.post("/findSearchResults", findSearchResults);
@@ -301,138 +317,139 @@ function findSearchResults(req, res, next) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
+          _context3.prev = 0;
           data1 = []; // I apologize for the YandereDev coding practice, but it had to be done.
 
           if (!(req.body.nameOfArtist == "" && req.body.title == "" && req.body.category == "")) {
-            _context3.next = 7;
+            _context3.next = 8;
             break;
           }
 
-          _context3.next = 4;
+          _context3.next = 5;
           return regeneratorRuntime.awrap(galleryCollection.find().toArray());
 
-        case 4:
+        case 5:
           data1 = _context3.sent;
-          _context3.next = 46;
+          _context3.next = 47;
           break;
 
-        case 7:
+        case 8:
           if (!(req.body.nameOfArtist == "" && req.body.category == "")) {
-            _context3.next = 13;
+            _context3.next = 14;
             break;
           }
 
-          _context3.next = 10;
+          _context3.next = 11;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Title": req.body.title
           }).toArray());
 
-        case 10:
+        case 11:
           data1 = _context3.sent;
-          _context3.next = 46;
+          _context3.next = 47;
           break;
 
-        case 13:
+        case 14:
           if (!(req.body.title == "" && req.body.category == "")) {
-            _context3.next = 19;
+            _context3.next = 20;
             break;
           }
 
-          _context3.next = 16;
+          _context3.next = 17;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Artist": req.body.nameOfArtist
           }).toArray());
 
-        case 16:
+        case 17:
           data1 = _context3.sent;
-          _context3.next = 46;
+          _context3.next = 47;
           break;
 
-        case 19:
+        case 20:
           if (!(req.body.nameOfArtist == "" && req.body.title == "")) {
-            _context3.next = 25;
+            _context3.next = 26;
             break;
           }
 
-          _context3.next = 22;
+          _context3.next = 23;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Category": req.body.category
           }).toArray());
 
-        case 22:
+        case 23:
           data1 = _context3.sent;
-          _context3.next = 46;
+          _context3.next = 47;
           break;
 
-        case 25:
+        case 26:
           if (!(req.body.title == "")) {
-            _context3.next = 31;
+            _context3.next = 32;
             break;
           }
 
-          _context3.next = 28;
+          _context3.next = 29;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Artist": req.body.nameOfArtist,
             "Category": req.body.category
           }).toArray());
 
-        case 28:
+        case 29:
           data1 = _context3.sent;
-          _context3.next = 46;
+          _context3.next = 47;
           break;
 
-        case 31:
+        case 32:
           if (!(req.body.category == "")) {
-            _context3.next = 37;
+            _context3.next = 38;
             break;
           }
 
-          _context3.next = 34;
+          _context3.next = 35;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Artist": req.body.nameOfArtist,
             "Title": req.body.title
           }).toArray());
 
-        case 34:
+        case 35:
           data1 = _context3.sent;
-          _context3.next = 46;
+          _context3.next = 47;
           break;
 
-        case 37:
+        case 38:
           if (!(req.body.nameOfArtist == "")) {
-            _context3.next = 43;
+            _context3.next = 44;
             break;
           }
 
-          _context3.next = 40;
+          _context3.next = 41;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Category": req.body.category,
             "Title": req.body.title
           }).toArray());
 
-        case 40:
+        case 41:
           data1 = _context3.sent;
-          _context3.next = 46;
+          _context3.next = 47;
           break;
 
-        case 43:
-          _context3.next = 45;
+        case 44:
+          _context3.next = 46;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Artist": req.body.nameOfArtist,
             "Category": req.body.category,
             "Title": req.body.title
           }).toArray());
-
-        case 45:
-          data1 = _context3.sent;
 
         case 46:
-          _context3.next = 48;
+          data1 = _context3.sent;
+
+        case 47:
+          _context3.next = 49;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 48:
+        case 49:
           data2 = _context3.sent;
           console.log(data1);
           totalPages = data1.length / 10;
@@ -453,13 +470,20 @@ function findSearchResults(req, res, next) {
             nextPage: pageAdd,
             prevPage: pageSub
           });
+          _context3.next = 61;
+          break;
 
-        case 55:
+        case 58:
+          _context3.prev = 58;
+          _context3.t0 = _context3["catch"](0);
+          res.status(500).send("Server error " + _context3.t0);
+
+        case 61:
         case "end":
           return _context3.stop();
       }
     }
-  });
+  }, null, null, [[0, 58]]);
 } // Here, we force it to call itself again and again.
 
 
@@ -471,19 +495,20 @@ function searchMedium(req, res, next) {
     while (1) {
       switch (_context4.prev = _context4.next) {
         case 0:
-          _context4.next = 2;
+          _context4.prev = 0;
+          _context4.next = 3;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Medium": req.params.medium
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context4.sent;
-          _context4.next = 5;
+          _context4.next = 6;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 5:
+        case 6:
           data2 = _context4.sent;
           pageValue = parseInt(req.query.page);
           pageAdd = pageValue + 1;
@@ -499,13 +524,20 @@ function searchMedium(req, res, next) {
             prevPage: pageSub,
             medium: req.params.medium
           });
+          _context4.next = 16;
+          break;
 
-        case 10:
+        case 13:
+          _context4.prev = 13;
+          _context4.t0 = _context4["catch"](0);
+          res.status(500).send("Server error " + _context4.t0);
+
+        case 16:
         case "end":
           return _context4.stop();
       }
     }
-  });
+  }, null, null, [[0, 13]]);
 } // Here, we force it to call itself again and again.
 
 
@@ -517,19 +549,20 @@ function searchCategory(req, res, next) {
     while (1) {
       switch (_context5.prev = _context5.next) {
         case 0:
-          _context5.next = 2;
+          _context5.prev = 0;
+          _context5.next = 3;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Category": req.params.category
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context5.sent;
-          _context5.next = 5;
+          _context5.next = 6;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 5:
+        case 6:
           data2 = _context5.sent;
           pageValue = parseInt(req.query.page);
           pageAdd = pageValue + 1;
@@ -545,13 +578,20 @@ function searchCategory(req, res, next) {
             prevPage: pageSub,
             category: req.params.category
           });
+          _context5.next = 16;
+          break;
 
-        case 10:
+        case 13:
+          _context5.prev = 13;
+          _context5.t0 = _context5["catch"](0);
+          res.status(500).send("Server error " + _context5.t0);
+
+        case 16:
         case "end":
           return _context5.stop();
       }
     }
-  });
+  }, null, null, [[0, 13]]);
 } // Similar to viewFollowing.
 
 
@@ -563,43 +603,44 @@ function viewFollowers(req, res, next) {
     while (1) {
       switch (_context6.prev = _context6.next) {
         case 0:
+          _context6.prev = 0;
           id = req.params.userId;
 
           if (!(id.length != 24)) {
-            _context6.next = 5;
+            _context6.next = 6;
             break;
           }
 
           res.status(406).send("Not a proper user ID");
-          _context6.next = 17;
+          _context6.next = 18;
           break;
 
-        case 5:
-          _context6.next = 7;
+        case 6:
+          _context6.next = 8;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.params.userId)
           }).toArray());
 
-        case 7:
+        case 8:
           data1 = _context6.sent;
           console.log(data1[0]);
 
           if (!(data1[0] == undefined)) {
-            _context6.next = 13;
+            _context6.next = 14;
             break;
           }
 
           res.status(400).send("Can't find anyone  in database");
-          _context6.next = 17;
+          _context6.next = 18;
           break;
 
-        case 13:
-          _context6.next = 15;
+        case 14:
+          _context6.next = 16;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 15:
+        case 16:
           data2 = _context6.sent;
           res.render("followers", {
             database: data1,
@@ -609,12 +650,21 @@ function viewFollowers(req, res, next) {
             notificationCount: data2[0].notificationsCount
           });
 
-        case 17:
+        case 18:
+          _context6.next = 23;
+          break;
+
+        case 20:
+          _context6.prev = 20;
+          _context6.t0 = _context6["catch"](0);
+          res.status(500).send("Server error " + _context6.t0);
+
+        case 23:
         case "end":
           return _context6.stop();
       }
     }
-  });
+  }, null, null, [[0, 20]]);
 }
 
 app.get("/artwork/:userId", renderArtwork);
@@ -625,39 +675,40 @@ function renderArtwork(req, res, next) {
     while (1) {
       switch (_context7.prev = _context7.next) {
         case 0:
+          _context7.prev = 0;
           console.log(req.params);
-          _context7.next = 3;
+          _context7.next = 4;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Title": req.params.userId
           }).toArray());
 
-        case 3:
+        case 4:
           data1 = _context7.sent;
 
           if (!(data1.length != 1)) {
-            _context7.next = 8;
+            _context7.next = 9;
             break;
           }
 
           res.status(400).send("Can't find artwork.");
-          _context7.next = 17;
+          _context7.next = 18;
           break;
 
-        case 8:
+        case 9:
           name = data1[0].Artist;
-          _context7.next = 11;
+          _context7.next = 12;
           return regeneratorRuntime.awrap(accountInfo.find({
             "username": name
           }).toArray());
 
-        case 11:
+        case 12:
           data2 = _context7.sent;
-          _context7.next = 14;
+          _context7.next = 15;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 14:
+        case 15:
           data3 = _context7.sent;
           console.log(data2);
           res.render("artProfile", {
@@ -669,12 +720,21 @@ function renderArtwork(req, res, next) {
             notificationCount: data3[0].notificationsCount
           });
 
-        case 17:
+        case 18:
+          _context7.next = 23;
+          break;
+
+        case 20:
+          _context7.prev = 20;
+          _context7.t0 = _context7["catch"](0);
+          res.status(500).send("Server error " + _context7.t0);
+
+        case 23:
         case "end":
           return _context7.stop();
       }
     }
-  });
+  }, null, null, [[0, 20]]);
 }
 
 app.put("/enroll/:title/:user", enroll);
@@ -685,19 +745,20 @@ function enroll(req, res, next) {
     while (1) {
       switch (_context8.prev = _context8.next) {
         case 0:
-          _context8.next = 2;
+          _context8.prev = 0;
+          _context8.next = 3;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.params.user)
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context8.sent;
-          _context8.next = 5;
+          _context8.next = 6;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 5:
+        case 6:
           data2 = _context8.sent;
           veri = false;
 
@@ -712,16 +773,16 @@ function enroll(req, res, next) {
           }
 
           if (!veri) {
-            _context8.next = 12;
+            _context8.next = 13;
             break;
           }
 
           res.status(400).send("Can't follow the account more than once");
-          _context8.next = 21;
+          _context8.next = 22;
           break;
 
-        case 12:
-          _context8.next = 14;
+        case 13:
+          _context8.next = 15;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.params.user),
             "workshops.title": req.params.title
@@ -734,10 +795,10 @@ function enroll(req, res, next) {
             }
           }));
 
-        case 14:
+        case 15:
           data2[0].notificationsCount++;
           notification = "You have signed up for " + data1[0].username + "'s workshop, " + req.params.title;
-          _context8.next = 18;
+          _context8.next = 19;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -746,8 +807,8 @@ function enroll(req, res, next) {
             }
           }));
 
-        case 18:
-          _context8.next = 20;
+        case 19:
+          _context8.next = 21;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -756,15 +817,24 @@ function enroll(req, res, next) {
             }
           }));
 
-        case 20:
+        case 21:
           res.status(200).send("Enroll success");
 
-        case 21:
+        case 22:
+          _context8.next = 27;
+          break;
+
+        case 24:
+          _context8.prev = 24;
+          _context8.t0 = _context8["catch"](0);
+          res.status(500).send("Server error " + _context8.t0);
+
+        case 27:
         case "end":
           return _context8.stop();
       }
     }
-  });
+  }, null, null, [[0, 24]]);
 }
 
 app.post("/leaveReview/:id", listReview);
@@ -775,33 +845,34 @@ function listReview(req, res, next) {
     while (1) {
       switch (_context9.prev = _context9.next) {
         case 0:
+          _context9.prev = 0;
           reviewString = req.body.review;
-          _context9.next = 3;
+          _context9.next = 4;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "_id": new _mongodb.ObjectId(req.params.id)
           }).toArray());
 
-        case 3:
+        case 4:
           data1 = _context9.sent;
-          _context9.next = 6;
+          _context9.next = 7;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 6:
+        case 7:
           data2 = _context9.sent;
 
           if (!(data1[0] == undefined)) {
-            _context9.next = 11;
+            _context9.next = 12;
             break;
           }
 
           res.status(400).send("Can't leave a review to something that does not exist");
-          _context9.next = 16;
+          _context9.next = 17;
           break;
 
-        case 11:
-          _context9.next = 13;
+        case 12:
+          _context9.next = 14;
           return regeneratorRuntime.awrap(galleryCollection.updateOne({
             "_id": new _mongodb.ObjectId(req.params.id)
           }, {
@@ -813,8 +884,8 @@ function listReview(req, res, next) {
             }
           }));
 
-        case 13:
-          _context9.next = 15;
+        case 14:
+          _context9.next = 16;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -826,15 +897,24 @@ function listReview(req, res, next) {
             }
           }));
 
-        case 15:
+        case 16:
           res.redirect('back');
 
-        case 16:
+        case 17:
+          _context9.next = 22;
+          break;
+
+        case 19:
+          _context9.prev = 19;
+          _context9.t0 = _context9["catch"](0);
+          res.status(500).send("Server error " + _context9.t0);
+
+        case 22:
         case "end":
           return _context9.stop();
       }
     }
-  });
+  }, null, null, [[0, 19]]);
 }
 
 app.put("/followAccount/:userId", followAccount);
@@ -845,22 +925,23 @@ function followAccount(req, res, next) {
     while (1) {
       switch (_context10.prev = _context10.next) {
         case 0:
+          _context10.prev = 0;
           followedAccountId = req.params.userId;
           console.log(followedAccountId); // the following account
 
-          _context10.next = 4;
+          _context10.next = 5;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 4:
+        case 5:
           data1 = _context10.sent;
-          _context10.next = 7;
+          _context10.next = 8;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(followedAccountId)
           }).toArray());
 
-        case 7:
+        case 8:
           data2 = _context10.sent;
           // we have a check here first to ensure that you don't follow the same account more than once.
           console.log("Following account" + data1);
@@ -876,19 +957,19 @@ function followAccount(req, res, next) {
           console.log(data1[0].following);
 
           if (!veri) {
-            _context10.next = 17;
+            _context10.next = 18;
             break;
           }
 
           res.status(400).send("You can't follow this account more than once.");
-          _context10.next = 29;
+          _context10.next = 30;
           break;
 
-        case 17:
+        case 18:
           console.log("All Clear.");
           data1[0].followingCount++;
           data2[0].followersCount++;
-          _context10.next = 22;
+          _context10.next = 23;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(followedAccountId)
           }, {
@@ -900,8 +981,8 @@ function followAccount(req, res, next) {
             }
           }));
 
-        case 22:
-          _context10.next = 24;
+        case 23:
+          _context10.next = 25;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -913,8 +994,8 @@ function followAccount(req, res, next) {
             }
           }));
 
-        case 24:
-          _context10.next = 26;
+        case 25:
+          _context10.next = 27;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -923,8 +1004,8 @@ function followAccount(req, res, next) {
             }
           }));
 
-        case 26:
-          _context10.next = 28;
+        case 27:
+          _context10.next = 29;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(followedAccountId)
           }, {
@@ -933,15 +1014,24 @@ function followAccount(req, res, next) {
             }
           }));
 
-        case 28:
+        case 29:
           res.status(200).send();
 
-        case 29:
+        case 30:
+          _context10.next = 35;
+          break;
+
+        case 32:
+          _context10.prev = 32;
+          _context10.t0 = _context10["catch"](0);
+          res.status(500).send("Server error " + _context10.t0);
+
+        case 35:
         case "end":
           return _context10.stop();
       }
     }
-  });
+  }, null, null, [[0, 32]]);
 }
 
 app.put("/likeImage/:userId", likeImage);
@@ -952,22 +1042,23 @@ function likeImage(req, res, next) {
     while (1) {
       switch (_context11.prev = _context11.next) {
         case 0:
+          _context11.prev = 0;
           followedAccountId = req.params.userId;
           console.log(followedAccountId); // the  account who like this
 
-          _context11.next = 4;
+          _context11.next = 5;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 4:
+        case 5:
           data1 = _context11.sent;
-          _context11.next = 7;
+          _context11.next = 8;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "_id": new _mongodb.ObjectId(followedAccountId)
           }).toArray());
 
-        case 7:
+        case 8:
           data2 = _context11.sent;
           // we have a check here first to ensure that you don't follow the same account more than once.
           console.log(data1);
@@ -981,18 +1072,18 @@ function likeImage(req, res, next) {
           }
 
           if (!veri) {
-            _context11.next = 16;
+            _context11.next = 17;
             break;
           }
 
           res.status(400).send("You can't like this image more than once.");
-          _context11.next = 23;
+          _context11.next = 24;
           break;
 
-        case 16:
+        case 17:
           console.log("All Clear.");
           data2[0].Likes++;
-          _context11.next = 20;
+          _context11.next = 21;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -1004,8 +1095,8 @@ function likeImage(req, res, next) {
             }
           }));
 
-        case 20:
-          _context11.next = 22;
+        case 21:
+          _context11.next = 23;
           return regeneratorRuntime.awrap(galleryCollection.updateOne({
             "_id": new _mongodb.ObjectId(followedAccountId)
           }, {
@@ -1014,15 +1105,24 @@ function likeImage(req, res, next) {
             }
           }));
 
-        case 22:
+        case 23:
           res.status(200).send();
 
-        case 23:
+        case 24:
+          _context11.next = 29;
+          break;
+
+        case 26:
+          _context11.prev = 26;
+          _context11.t0 = _context11["catch"](0);
+          res.status(500).send("Server error " + _context11.t0);
+
+        case 29:
         case "end":
           return _context11.stop();
       }
     }
-  });
+  }, null, null, [[0, 26]]);
 }
 
 app.get("/viewLikedandReviewed", viewLikedAndReviewed);
@@ -1033,12 +1133,13 @@ function viewLikedAndReviewed(req, res, next) {
     while (1) {
       switch (_context12.prev = _context12.next) {
         case 0:
-          _context12.next = 2;
+          _context12.prev = 0;
+          _context12.next = 3;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context12.sent;
           res.render("artist", {
             database: data1[0],
@@ -1047,13 +1148,20 @@ function viewLikedAndReviewed(req, res, next) {
             admin: req.session.admin,
             notificationCount: data1[0].notificationsCount
           });
+          _context12.next = 10;
+          break;
 
-        case 4:
+        case 7:
+          _context12.prev = 7;
+          _context12.t0 = _context12["catch"](0);
+          console.log("Error");
+
+        case 10:
         case "end":
           return _context12.stop();
       }
     }
-  });
+  }, null, null, [[0, 7]]);
 }
 
 app.get("/searchArtwork", searchArtwork);
@@ -1064,12 +1172,13 @@ function searchArtwork(req, res, next) {
     while (1) {
       switch (_context13.prev = _context13.next) {
         case 0:
-          _context13.next = 2;
+          _context13.prev = 0;
+          _context13.next = 3;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context13.sent;
           res.render("search", {
             database: data1,
@@ -1078,13 +1187,20 @@ function searchArtwork(req, res, next) {
             admin: req.session.admin,
             notificationCount: data1[0].notificationsCount
           });
+          _context13.next = 10;
+          break;
 
-        case 4:
+        case 7:
+          _context13.prev = 7;
+          _context13.t0 = _context13["catch"](0);
+          console.log("Error");
+
+        case 10:
         case "end":
           return _context13.stop();
       }
     }
-  });
+  }, null, null, [[0, 7]]);
 }
 
 app.get("/profile/:id", renderProfile);
@@ -1095,31 +1211,32 @@ function renderProfile(req, res, next) {
     while (1) {
       switch (_context14.prev = _context14.next) {
         case 0:
+          _context14.prev = 0;
           id = req.params.id;
 
           if (!(id.length != 24)) {
-            _context14.next = 5;
+            _context14.next = 6;
             break;
           }
 
           res.status(400).send("Faulty request");
-          _context14.next = 12;
+          _context14.next = 13;
           break;
 
-        case 5:
-          _context14.next = 7;
+        case 6:
+          _context14.next = 8;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(id)
           }).toArray());
 
-        case 7:
+        case 8:
           data1 = _context14.sent;
-          _context14.next = 10;
+          _context14.next = 11;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 10:
+        case 11:
           data2 = _context14.sent;
 
           if (data1[0] == undefined) {
@@ -1136,12 +1253,21 @@ function renderProfile(req, res, next) {
             });
           }
 
-        case 12:
+        case 13:
+          _context14.next = 18;
+          break;
+
+        case 15:
+          _context14.prev = 15;
+          _context14.t0 = _context14["catch"](0);
+          res.status(500).send("Server error " + _context14.t0);
+
+        case 18:
         case "end":
           return _context14.stop();
       }
     }
-  });
+  }, null, null, [[0, 15]]);
 }
 
 app.get("/addNewArt", function _callee(req, res, next) {
@@ -1150,12 +1276,13 @@ app.get("/addNewArt", function _callee(req, res, next) {
     while (1) {
       switch (_context15.prev = _context15.next) {
         case 0:
-          _context15.next = 2;
+          _context15.prev = 0;
+          _context15.next = 3;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context15.sent;
           res.render("addNewArt", {
             id: req.session._id,
@@ -1163,13 +1290,20 @@ app.get("/addNewArt", function _callee(req, res, next) {
             admin: req.session.admin,
             notificationCount: data1[0].notificationsCount
           });
+          _context15.next = 10;
+          break;
 
-        case 4:
+        case 7:
+          _context15.prev = 7;
+          _context15.t0 = _context15["catch"](0);
+          res.status(500).send("Server error " + _context15.t0);
+
+        case 10:
         case "end":
           return _context15.stop();
       }
     }
-  });
+  }, null, null, [[0, 7]]);
 });
 app.post("/addNewArt", addArt);
 
@@ -1180,12 +1314,13 @@ function addArt(req, res, next) {
     while (1) {
       switch (_context16.prev = _context16.next) {
         case 0:
-          _context16.next = 2;
+          _context16.prev = 0;
+          _context16.next = 3;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context16.sent;
           artistName = data1[0].username;
           title = req.body.title;
@@ -1194,22 +1329,22 @@ function addArt(req, res, next) {
           medium = req.body.medium;
           url = req.body.url;
           year = req.body.year;
-          _context16.next = 12;
+          _context16.next = 13;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 12:
+        case 13:
           dataObject = _context16.sent;
 
           if (!(dataObject[0].artMade.length <= 0)) {
-            _context16.next = 18;
+            _context16.next = 19;
             break;
           }
 
           data1[0].accountType = "artist";
           req.session.accountType = "artist";
-          _context16.next = 18;
+          _context16.next = 19;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -1218,11 +1353,11 @@ function addArt(req, res, next) {
             }
           }));
 
-        case 18:
-          _context16.next = 20;
+        case 19:
+          _context16.next = 21;
           return regeneratorRuntime.awrap(galleryCollection.find({}).toArray());
 
-        case 20:
+        case 21:
           galleryInfo = _context16.sent;
           veri = false;
 
@@ -1233,15 +1368,15 @@ function addArt(req, res, next) {
           }
 
           if (!veri) {
-            _context16.next = 27;
+            _context16.next = 28;
             break;
           }
 
           res.status(406).send("Can't add an artwork, as it has a duplicate name.");
-          _context16.next = 48;
+          _context16.next = 49;
           break;
 
-        case 27:
+        case 28:
           addedObjecttoArtist = {
             "Title": title,
             "Artist": artistName,
@@ -1251,7 +1386,7 @@ function addArt(req, res, next) {
             "Description": description,
             "Poster": url
           };
-          _context16.next = 30;
+          _context16.next = 31;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -1260,8 +1395,8 @@ function addArt(req, res, next) {
             }
           }));
 
-        case 30:
-          _context16.next = 32;
+        case 31:
+          _context16.next = 33;
           return regeneratorRuntime.awrap(galleryCollection.insertOne({
             "Title": title,
             "Artist": artistName,
@@ -1274,27 +1409,27 @@ function addArt(req, res, next) {
             "Reviews": []
           }));
 
-        case 32:
+        case 33:
           _context16.t0 = regeneratorRuntime.keys(data1[0].followers);
 
-        case 33:
+        case 34:
           if ((_context16.t1 = _context16.t0()).done) {
-            _context16.next = 47;
+            _context16.next = 48;
             break;
           }
 
           _i = _context16.t1.value;
-          _context16.next = 37;
+          _context16.next = 38;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": data1[0].followers[_i]._id
           }).toArray());
 
-        case 37:
+        case 38:
           follower = _context16.sent;
           console.log(follower);
           follower[0].notificationsCount++;
           notification = artistName + " has added a new artwork. ";
-          _context16.next = 43;
+          _context16.next = 44;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": data1[0].followers[_i]._id
           }, {
@@ -1303,8 +1438,8 @@ function addArt(req, res, next) {
             }
           }));
 
-        case 43:
-          _context16.next = 45;
+        case 44:
+          _context16.next = 46;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": data1[0].followers[_i]._id
           }, {
@@ -1313,19 +1448,28 @@ function addArt(req, res, next) {
             }
           }));
 
-        case 45:
-          _context16.next = 33;
+        case 46:
+          _context16.next = 34;
           break;
 
-        case 47:
+        case 48:
           res.redirect("/login");
 
-        case 48:
+        case 49:
+          _context16.next = 54;
+          break;
+
+        case 51:
+          _context16.prev = 51;
+          _context16.t2 = _context16["catch"](0);
+          res.status(500).send("Server error " + _context16.t2);
+
+        case 54:
         case "end":
           return _context16.stop();
       }
     }
-  });
+  }, null, null, [[0, 51]]);
 }
 
 app.get("/inbox", inbox);
@@ -1336,15 +1480,16 @@ function inbox(req, res, next) {
     while (1) {
       switch (_context17.prev = _context17.next) {
         case 0:
-          _context17.next = 2;
+          _context17.prev = 0;
+          _context17.next = 3;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context17.sent;
           data1[0].notificationsCount = 0;
-          _context17.next = 6;
+          _context17.next = 7;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -1353,7 +1498,7 @@ function inbox(req, res, next) {
             }
           }));
 
-        case 6:
+        case 7:
           res.status(200).render("notifications", {
             database: data1[0],
             name: data1[0].username,
@@ -1362,13 +1507,20 @@ function inbox(req, res, next) {
             id: data1[0]._id,
             notificationCount: data1[0].notificationsCount
           });
+          _context17.next = 13;
+          break;
 
-        case 7:
+        case 10:
+          _context17.prev = 10;
+          _context17.t0 = _context17["catch"](0);
+          console.log("error");
+
+        case 13:
         case "end":
           return _context17.stop();
       }
     }
-  });
+  }, null, null, [[0, 10]]);
 }
 
 app["delete"]("/unfollowAccount/:accountId", unfollowAccount);
@@ -1379,24 +1531,25 @@ function unfollowAccount(req, res, next) {
     while (1) {
       switch (_context18.prev = _context18.next) {
         case 0:
-          _context18.next = 2;
+          _context18.prev = 0;
+          _context18.next = 3;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context18.sent;
           console.log(data1);
-          _context18.next = 6;
+          _context18.next = 7;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.params.accountId)
           }).toArray());
 
-        case 6:
+        case 7:
           data2 = _context18.sent;
           data1[0].followingCount--;
           data2[0].followersCount--;
-          _context18.next = 11;
+          _context18.next = 12;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -1408,8 +1561,8 @@ function unfollowAccount(req, res, next) {
             }
           }));
 
-        case 11:
-          _context18.next = 13;
+        case 12:
+          _context18.next = 14;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.params.accountId)
           }, {
@@ -1421,8 +1574,8 @@ function unfollowAccount(req, res, next) {
             }
           }));
 
-        case 13:
-          _context18.next = 15;
+        case 14:
+          _context18.next = 16;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -1431,8 +1584,8 @@ function unfollowAccount(req, res, next) {
             }
           }));
 
-        case 15:
-          _context18.next = 17;
+        case 16:
+          _context18.next = 18;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.params.accountId)
           }, {
@@ -1441,16 +1594,23 @@ function unfollowAccount(req, res, next) {
             }
           }));
 
-        case 17:
+        case 18:
           console.log("it worked");
           res.status(200).send("It worked");
+          _context18.next = 25;
+          break;
 
-        case 19:
+        case 22:
+          _context18.prev = 22;
+          _context18.t0 = _context18["catch"](0);
+          res.status(500).send("Server error " + _context18.t0);
+
+        case 25:
         case "end":
           return _context18.stop();
       }
     }
-  });
+  }, null, null, [[0, 22]]);
 }
 
 app["delete"]("/removeLike/:title", removeLike);
@@ -1461,27 +1621,28 @@ function removeLike(req, res, next) {
     while (1) {
       switch (_context19.prev = _context19.next) {
         case 0:
+          _context19.prev = 0;
           title = req.params.title; // the  account who like this
 
-          _context19.next = 3;
+          _context19.next = 4;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 3:
+        case 4:
           data1 = _context19.sent;
-          _context19.next = 6;
+          _context19.next = 7;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Title": title
           }).toArray());
 
-        case 6:
+        case 7:
           data2 = _context19.sent;
           // we have a check here first to ensure that you don't follow the same account more than once.
           console.log(data1);
           console.log(data2);
           data2[0].Likes--;
-          _context19.next = 12;
+          _context19.next = 13;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -1493,8 +1654,8 @@ function removeLike(req, res, next) {
             }
           }));
 
-        case 12:
-          _context19.next = 14;
+        case 13:
+          _context19.next = 15;
           return regeneratorRuntime.awrap(galleryCollection.updateOne({
             "Title": title
           }, {
@@ -1503,15 +1664,22 @@ function removeLike(req, res, next) {
             }
           }));
 
-        case 14:
-          res.status(200).send("We did it");
-
         case 15:
+          res.status(200).send("We did it");
+          _context19.next = 21;
+          break;
+
+        case 18:
+          _context19.prev = 18;
+          _context19.t0 = _context19["catch"](0);
+          res.status(500).send("Server error " + _context19.t0);
+
+        case 21:
         case "end":
           return _context19.stop();
       }
     }
-  });
+  }, null, null, [[0, 18]]);
 }
 
 app["delete"]("/removeReview/:title/:user", removeReview);
@@ -1522,32 +1690,33 @@ function removeReview(req, res, next) {
     while (1) {
       switch (_context20.prev = _context20.next) {
         case 0:
-          _context20.next = 2;
+          _context20.prev = 0;
+          _context20.next = 3;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context20.sent;
-          _context20.next = 5;
+          _context20.next = 6;
           return regeneratorRuntime.awrap(galleryCollection.find({
             "Title": req.params.title
           }).toArray());
 
-        case 5:
+        case 6:
           data2 = _context20.sent;
 
           if (!(data2.length != 1)) {
-            _context20.next = 10;
+            _context20.next = 11;
             break;
           }
 
           res.status(400).send("Can't find the artwork in here");
-          _context20.next = 15;
+          _context20.next = 16;
           break;
 
-        case 10:
-          _context20.next = 12;
+        case 11:
+          _context20.next = 13;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -1559,8 +1728,8 @@ function removeReview(req, res, next) {
             }
           }));
 
-        case 12:
-          _context20.next = 14;
+        case 13:
+          _context20.next = 15;
           return regeneratorRuntime.awrap(galleryCollection.updateOne({
             "Title": req.params.title
           }, {
@@ -1572,15 +1741,24 @@ function removeReview(req, res, next) {
             }
           }));
 
-        case 14:
+        case 15:
           res.status(200).send("We did it");
 
-        case 15:
+        case 16:
+          _context20.next = 21;
+          break;
+
+        case 18:
+          _context20.prev = 18;
+          _context20.t0 = _context20["catch"](0);
+          res.status(500).send("Server error " + _context20.t0);
+
+        case 21:
         case "end":
           return _context20.stop();
       }
     }
-  });
+  }, null, null, [[0, 18]]);
 }
 
 app.get("/viewEnrolled/:title/:user", viewEnrolled);
@@ -1591,43 +1769,44 @@ function viewEnrolled(req, res, next) {
     while (1) {
       switch (_context21.prev = _context21.next) {
         case 0:
-          _context21.next = 2;
+          _context21.prev = 0;
+          _context21.next = 3;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.params.user)
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context21.sent;
           count = 0;
           _context21.t0 = regeneratorRuntime.keys(data1[0].workshops);
 
-        case 5:
+        case 6:
           if ((_context21.t1 = _context21.t0()).done) {
-            _context21.next = 12;
+            _context21.next = 13;
             break;
           }
 
           i = _context21.t1.value;
 
           if (!(data1[0].workshops[i].title == req.params.title)) {
-            _context21.next = 9;
+            _context21.next = 10;
             break;
           }
 
-          return _context21.abrupt("break", 12);
+          return _context21.abrupt("break", 13);
 
-        case 9:
+        case 10:
           count += 1;
-          _context21.next = 5;
+          _context21.next = 6;
           break;
 
-        case 12:
-          _context21.next = 14;
+        case 13:
+          _context21.next = 15;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 14:
+        case 15:
           data2 = _context21.sent;
           res.status(200).render("workshop", {
             database: data1[0].workshops[count],
@@ -1636,13 +1815,20 @@ function viewEnrolled(req, res, next) {
             id: data2[0]._id,
             notificationCount: data2[0].notificationsCount
           });
+          _context21.next = 22;
+          break;
 
-        case 16:
+        case 19:
+          _context21.prev = 19;
+          _context21.t2 = _context21["catch"](0);
+          res.status(500).send("Server error " + _context21.t2);
+
+        case 22:
         case "end":
           return _context21.stop();
       }
     }
-  });
+  }, null, null, [[0, 19]]);
 } //authorization function
 
 
@@ -1685,12 +1871,14 @@ function renderLogin(req, res, next) {
     while (1) {
       switch (_context23.prev = _context23.next) {
         case 0:
-          _context23.next = 2;
+          _context23.prev = 0;
+          console.log("Logging in");
+          _context23.next = 4;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 2:
+        case 4:
           data1 = _context23.sent;
           res.status(200).render("login", {
             name: data1[0].username,
@@ -1699,13 +1887,20 @@ function renderLogin(req, res, next) {
             id: data1[0]._id,
             notificationCount: data1[0].notificationsCount
           });
+          _context23.next = 11;
+          break;
 
-        case 4:
+        case 8:
+          _context23.prev = 8;
+          _context23.t0 = _context23["catch"](0);
+          console.log("Error");
+
+        case 11:
         case "end":
           return _context23.stop();
       }
     }
-  });
+  }, null, null, [[0, 8]]);
 }
 
 function register(req, res, next) {
@@ -1714,6 +1909,7 @@ function register(req, res, next) {
     while (1) {
       switch (_context24.prev = _context24.next) {
         case 0:
+          _context24.prev = 0;
           username = req.body.username;
           password = req.body.password;
           newAccount = {
@@ -1732,34 +1928,34 @@ function register(req, res, next) {
             "inbox": [],
             "workshops": []
           };
-          _context24.next = 5;
+          _context24.next = 6;
           return regeneratorRuntime.awrap(accountInfo.find({
             "username": username
           }).toArray());
 
-        case 5:
+        case 6:
           verificationIfUnique = _context24.sent;
 
           if (!(verificationIfUnique.length != 0)) {
-            _context24.next = 10;
+            _context24.next = 11;
             break;
           }
 
           res.status(401).send("Username is already taken");
-          _context24.next = 21;
+          _context24.next = 22;
           break;
 
-        case 10:
-          _context24.next = 12;
+        case 11:
+          _context24.next = 13;
           return regeneratorRuntime.awrap(accountInfo.insertOne(newAccount));
 
-        case 12:
-          _context24.next = 14;
+        case 13:
+          _context24.next = 15;
           return regeneratorRuntime.awrap(accountInfo.find({
             "username": username
           }).toArray());
 
-        case 14:
+        case 15:
           data2 = _context24.sent;
           req.session.loggedin = true;
           req.session._id = data2[0]._id;
@@ -1769,12 +1965,21 @@ function register(req, res, next) {
           req.session.admin = data2[0].admin;
           res.redirect("/login");
 
-        case 21:
+        case 22:
+          _context24.next = 27;
+          break;
+
+        case 24:
+          _context24.prev = 24;
+          _context24.t0 = _context24["catch"](0);
+          res.status(500).send("Server error " + _context24.t0);
+
+        case 27:
         case "end":
           return _context24.stop();
       }
     }
-  });
+  }, null, null, [[0, 24]]);
 }
 
 function swapAccounts(req, res, next) {
@@ -1783,36 +1988,37 @@ function swapAccounts(req, res, next) {
     while (1) {
       switch (_context25.prev = _context25.next) {
         case 0:
+          _context25.prev = 0;
           console.log("swapping accountType");
           console.log(req.session._id);
-          _context25.next = 4;
+          _context25.next = 5;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 4:
+        case 5:
           data1 = _context25.sent;
           console.log(data1);
           artMade = data1[0].artMade.length;
 
           if (!(artMade == 0)) {
-            _context25.next = 11;
+            _context25.next = 12;
             break;
           }
 
           res.redirect("/addNewArt");
-          _context25.next = 23;
+          _context25.next = 24;
           break;
 
-        case 11:
+        case 12:
           if (!(data1[0].accountType == "patron")) {
-            _context25.next = 18;
+            _context25.next = 19;
             break;
           }
 
           data1[0].accountType = "artist";
           req.session.accountType = "artist";
-          _context25.next = 16;
+          _context25.next = 17;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -1821,14 +2027,14 @@ function swapAccounts(req, res, next) {
             }
           }));
 
-        case 16:
-          _context25.next = 22;
+        case 17:
+          _context25.next = 23;
           break;
 
-        case 18:
+        case 19:
           data1[0].accountType = "patron";
           req.session.accountType = "patron";
-          _context25.next = 22;
+          _context25.next = 23;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -1837,15 +2043,24 @@ function swapAccounts(req, res, next) {
             }
           }));
 
-        case 22:
+        case 23:
           res.redirect("/login");
 
-        case 23:
+        case 24:
+          _context25.next = 29;
+          break;
+
+        case 26:
+          _context25.prev = 26;
+          _context25.t0 = _context25["catch"](0);
+          res.status(500).send("Server error " + _context25.t0);
+
+        case 29:
         case "end":
           return _context25.stop();
       }
     }
-  });
+  }, null, null, [[0, 26]]);
 }
 
 app.get("/", function _callee2(req, res, next) {
@@ -1854,24 +2069,32 @@ app.get("/", function _callee2(req, res, next) {
     while (1) {
       switch (_context26.prev = _context26.next) {
         case 0:
+          _context26.prev = 0;
           console.log("Another trace to main. This is a check to ensure this gets this function, and if not, we throw an error");
-          _context26.next = 3;
+          _context26.next = 4;
           return regeneratorRuntime.awrap(galleryCollection.find({}).limit(5).toArray());
 
-        case 3:
+        case 4:
           data1 = _context26.sent;
           console.log(data1);
           console.log("Welcome to the art gallery. Enjoy your time here");
           res.render("welcome", {
             database: data1
           });
+          _context26.next = 13;
+          break;
 
-        case 7:
+        case 10:
+          _context26.prev = 10;
+          _context26.t0 = _context26["catch"](0);
+          res.status(500).send("Server error " + _context26.t0);
+
+        case 13:
         case "end":
           return _context26.stop();
       }
     }
-  });
+  }, null, null, [[0, 10]]);
 });
 app.get("/addWorkshop", function _callee3(req, res, next) {
   var data1;
@@ -1879,12 +2102,13 @@ app.get("/addWorkshop", function _callee3(req, res, next) {
     while (1) {
       switch (_context27.prev = _context27.next) {
         case 0:
-          _context27.next = 2;
+          _context27.prev = 0;
+          _context27.next = 3;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context27.sent;
           console.log(data1);
           res.render("workshops", {
@@ -1894,13 +2118,20 @@ app.get("/addWorkshop", function _callee3(req, res, next) {
             id: req.session._id,
             notificationCount: data1[0].notificationsCount
           });
+          _context27.next = 11;
+          break;
 
-        case 5:
+        case 8:
+          _context27.prev = 8;
+          _context27.t0 = _context27["catch"](0);
+          res.status(500).send("Server error " + _context27.t0);
+
+        case 11:
         case "end":
           return _context27.stop();
       }
     }
-  });
+  }, null, null, [[0, 8]]);
 });
 app.post("/addWorkshop", function _callee4(req, res, next) {
   var data1, newTitle, veri, i, newAddedObject, _i2, follower, notification;
@@ -1909,12 +2140,13 @@ app.post("/addWorkshop", function _callee4(req, res, next) {
     while (1) {
       switch (_context28.prev = _context28.next) {
         case 0:
-          _context28.next = 2;
+          _context28.prev = 0;
+          _context28.next = 3;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 2:
+        case 3:
           data1 = _context28.sent;
           newTitle = req.body.workshopTitle;
           veri = false;
@@ -1926,20 +2158,20 @@ app.post("/addWorkshop", function _callee4(req, res, next) {
           }
 
           if (!veri) {
-            _context28.next = 10;
+            _context28.next = 11;
             break;
           }
 
           res.status(406).send("The name for the workshop is unfortunately taken. Please try a different name or wait for this workshop to conclude");
-          _context28.next = 29;
+          _context28.next = 30;
           break;
 
-        case 10:
+        case 11:
           newAddedObject = {
             "title": newTitle,
             "enrolled": []
           };
-          _context28.next = 13;
+          _context28.next = 14;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": new _mongodb.ObjectId(req.session._id)
           }, {
@@ -1948,27 +2180,27 @@ app.post("/addWorkshop", function _callee4(req, res, next) {
             }
           }));
 
-        case 13:
+        case 14:
           _context28.t0 = regeneratorRuntime.keys(data1[0].followers);
 
-        case 14:
+        case 15:
           if ((_context28.t1 = _context28.t0()).done) {
-            _context28.next = 28;
+            _context28.next = 29;
             break;
           }
 
           _i2 = _context28.t1.value;
-          _context28.next = 18;
+          _context28.next = 19;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": data1[0].followers[_i2]._id
           }).toArray());
 
-        case 18:
+        case 19:
           follower = _context28.sent;
           console.log(follower);
           follower[0].notificationsCount++;
           notification = data1[0].username + " has added a new workshop. ";
-          _context28.next = 24;
+          _context28.next = 25;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": data1[0].followers[_i2]._id
           }, {
@@ -1977,8 +2209,8 @@ app.post("/addWorkshop", function _callee4(req, res, next) {
             }
           }));
 
-        case 24:
-          _context28.next = 26;
+        case 25:
+          _context28.next = 27;
           return regeneratorRuntime.awrap(accountInfo.updateOne({
             "_id": data1[0].followers[_i2]._id
           }, {
@@ -1987,19 +2219,28 @@ app.post("/addWorkshop", function _callee4(req, res, next) {
             }
           }));
 
-        case 26:
-          _context28.next = 14;
+        case 27:
+          _context28.next = 15;
           break;
 
-        case 28:
+        case 29:
           res.redirect("/login");
 
-        case 29:
+        case 30:
+          _context28.next = 35;
+          break;
+
+        case 32:
+          _context28.prev = 32;
+          _context28.t2 = _context28["catch"](0);
+          res.status(500).send("Server error " + _context28.t2);
+
+        case 35:
         case "end":
           return _context28.stop();
       }
     }
-  });
+  }, null, null, [[0, 32]]);
 });
 app.get("/viewers", function _callee5(req, res, next) {
   var data1;
@@ -2007,10 +2248,11 @@ app.get("/viewers", function _callee5(req, res, next) {
     while (1) {
       switch (_context29.prev = _context29.next) {
         case 0:
-          _context29.next = 2;
+          _context29.prev = 0;
+          _context29.next = 3;
           return regeneratorRuntime.awrap(accountInfo.find({}).toArray());
 
-        case 2:
+        case 3:
           data1 = _context29.sent;
           res.render("viewers", {
             database: data1,
@@ -2019,24 +2261,44 @@ app.get("/viewers", function _callee5(req, res, next) {
             id: req.session._id,
             notificationCount: req.session.notificationCount
           });
+          _context29.next = 10;
+          break;
 
-        case 4:
+        case 7:
+          _context29.prev = 7;
+          _context29.t0 = _context29["catch"](0);
+          res.status(500).send("Server error " + _context29.t0);
+
+        case 10:
         case "end":
           return _context29.stop();
       }
     }
-  });
+  }, null, null, [[0, 7]]);
 });
 app.get("/loginScreen", function (req, res, next) {
-  res.render("loginScreen");
+  try {
+    console.log("Beginning test");
+    res.render("loginScreen");
+  } catch (error) {
+    res.status(500).send("Server error " + error);
+  }
 });
 app.get("/register", function (req, res, next) {
-  res.render("register");
+  try {
+    res.render("register");
+  } catch (error) {
+    res.status(500).send("Server error " + error);
+  }
 });
 
 function admin(req, res, next) {
-  res.status(200).send("Welcome to the admin page, " + req.session.username);
-  return;
+  try {
+    res.status(200).send("Welcome to the admin page, " + req.session.username);
+    return;
+  } catch (error) {
+    res.status(500).send("Server error " + error);
+  }
 } //If the username and password match somebody in our database,
 // then create a new session ID and save it in the database.
 //That session ID will be associated with the requesting user.
@@ -2049,17 +2311,19 @@ function login(req, res, next) {
     while (1) {
       switch (_context30.prev = _context30.next) {
         case 0:
+          _context30.prev = 0;
+
           if (!req.session.loggedin) {
-            _context30.next = 6;
+            _context30.next = 7;
             break;
           }
 
-          _context30.next = 3;
+          _context30.next = 4;
           return regeneratorRuntime.awrap(accountInfo.find({
             "_id": new _mongodb.ObjectId(req.session._id)
           }).toArray());
 
-        case 3:
+        case 4:
           _data = _context30.sent;
           res.status(200).render("login", {
             name: req.session.username,
@@ -2070,15 +2334,15 @@ function login(req, res, next) {
           });
           return _context30.abrupt("return");
 
-        case 6:
+        case 7:
           username = req.body.username;
           password = req.body.password;
-          _context30.next = 10;
+          _context30.next = 11;
           return regeneratorRuntime.awrap(accountInfo.find({
             "username": username
           }).toArray());
 
-        case 10:
+        case 11:
           data1 = _context30.sent;
           console.log(data1.length);
           console.log("Logging in with credentials:");
@@ -2086,7 +2350,7 @@ function login(req, res, next) {
           console.log("Password: " + req.body.password); //does the user exist?
 
           if (!(data1.length == 0)) {
-            _context30.next = 18;
+            _context30.next = 19;
             break;
           }
 
@@ -2094,7 +2358,7 @@ function login(req, res, next) {
 
           return _context30.abrupt("return");
 
-        case 18:
+        case 19:
           //the user exists. Lets authenticate them
           if (data1[0].password === req.body.password) {
             req.session.loggedin = true; // now that particular user session has loggedin value, and it is set to true 
@@ -2120,12 +2384,20 @@ function login(req, res, next) {
             res.status(401).send("Not authorized. Invalid password.");
           }
 
-        case 19:
+          _context30.next = 25;
+          break;
+
+        case 22:
+          _context30.prev = 22;
+          _context30.t0 = _context30["catch"](0);
+          res.status(500).send("Server error " + _context30.t0);
+
+        case 25:
         case "end":
           return _context30.stop();
       }
     }
-  });
+  }, null, null, [[0, 22]]);
 }
 
 function logout(req, res, next) {
@@ -2140,7 +2412,7 @@ function logout(req, res, next) {
             req.session.admin = undefined;
             res.redirect("/");
           } else {
-            res.status(200).send("You cannot log out because you aren't logged in.");
+            res.status(401).send("You cannot log out because you aren't logged in.");
           }
 
         case 1:
@@ -2149,12 +2421,7 @@ function logout(req, res, next) {
       }
     }
   });
-} //process use
+}
 
-
-process.on('SIGINT', function () {
-  console.info("Interrupted");
-  process.exit('0');
-});
 app.listen(3000);
 console.log("Server listening on port 3000");

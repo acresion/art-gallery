@@ -8,3 +8,6 @@ Remember that 127.0.0.1 indicates localhost. Of the current computer.
 
 # Updates:
 Talk with dad helped. What happened is that in fact, whenever I attempt to connect to MongoDB, I actually attempt to connect to the MongoDB on THAT OPERATING SYSTEM. It works locally, since I have the application pre installed, but it doesnt work on the container, as, in fact, it doesn't exist on the container. It would then mercy kill a pod due to memory overflow (prevent infinites). What I need it to do is actually connect it to the DEVICE's  localhost, in such a way that on a container, I connect to this computer's mongodb port.
+
+# Notes:
+You may notice that I just spammed try catch in every async function. You may be asking: Why do that instead of one massive try catch? I appreciate critical thinking, unfortunately, try catch will only catch while an async function is running, not before or after it ran. This style of error handling/try-catch spam is not sustainable with larger projects, and it would be advised to persue an alternate method.
