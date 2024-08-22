@@ -16,7 +16,7 @@ app.set("view engine", "pug"); // First task: Use error handling to report error
 console.log("Beginning import");
 console.log("Successfully imported mongodb"); // Replace the uri string with your MongoDB deployment's connection string.
 
-var uri = "mongodb://129.0.0.1:27017/"; // Experimental code that can be used to error check.
+var uri = "mongodb://127.0.0.1:27017/"; // Experimental code that can be used to error check.
 
 var client = new _mongodb.MongoClient(uri); // apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that the error message will still get thrown. Need to check if it's coming from the functions itself
 
@@ -116,15 +116,16 @@ function viewFollowing(req, res, next) {
           });
 
         case 18:
-          _context.next = 23;
+          _context.next = 24;
           break;
 
         case 20:
           _context.prev = 20;
           _context.t0 = _context["catch"](0);
-          res.status(500).send("Server error " + _context.t0);
+          console.log(_context.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 23:
+        case 24:
         case "end":
           return _context.stop();
       }
@@ -293,15 +294,16 @@ function getSearchResults(req, res, next) {
             nextPage: pageAdd,
             prevPage: pageSub
           });
-          _context2.next = 60;
+          _context2.next = 61;
           break;
 
         case 57:
           _context2.prev = 57;
           _context2.t0 = _context2["catch"](0);
-          res.status(500).send("Server error " + _context2.t0);
+          console.log(_context2.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 60:
+        case 61:
         case "end":
           return _context2.stop();
       }
@@ -470,15 +472,16 @@ function findSearchResults(req, res, next) {
             nextPage: pageAdd,
             prevPage: pageSub
           });
-          _context3.next = 61;
+          _context3.next = 62;
           break;
 
         case 58:
           _context3.prev = 58;
           _context3.t0 = _context3["catch"](0);
-          res.status(500).send("Server error " + _context3.t0);
+          console.log(_context3.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 61:
+        case 62:
         case "end":
           return _context3.stop();
       }
@@ -524,15 +527,16 @@ function searchMedium(req, res, next) {
             prevPage: pageSub,
             medium: req.params.medium
           });
-          _context4.next = 16;
+          _context4.next = 17;
           break;
 
         case 13:
           _context4.prev = 13;
           _context4.t0 = _context4["catch"](0);
-          res.status(500).send("Server error " + _context4.t0);
+          console.log(_context4.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 16:
+        case 17:
         case "end":
           return _context4.stop();
       }
@@ -578,15 +582,16 @@ function searchCategory(req, res, next) {
             prevPage: pageSub,
             category: req.params.category
           });
-          _context5.next = 16;
+          _context5.next = 17;
           break;
 
         case 13:
           _context5.prev = 13;
           _context5.t0 = _context5["catch"](0);
-          res.status(500).send("Server error " + _context5.t0);
+          console.log(_context5.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 16:
+        case 17:
         case "end":
           return _context5.stop();
       }
@@ -651,15 +656,16 @@ function viewFollowers(req, res, next) {
           });
 
         case 18:
-          _context6.next = 23;
+          _context6.next = 24;
           break;
 
         case 20:
           _context6.prev = 20;
           _context6.t0 = _context6["catch"](0);
-          res.status(500).send("Server error " + _context6.t0);
+          console.log(_context6.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 23:
+        case 24:
         case "end":
           return _context6.stop();
       }
@@ -721,15 +727,16 @@ function renderArtwork(req, res, next) {
           });
 
         case 18:
-          _context7.next = 23;
+          _context7.next = 24;
           break;
 
         case 20:
           _context7.prev = 20;
           _context7.t0 = _context7["catch"](0);
-          res.status(500).send("Server error " + _context7.t0);
+          console.log(_context7.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 23:
+        case 24:
         case "end":
           return _context7.stop();
       }
@@ -821,15 +828,16 @@ function enroll(req, res, next) {
           res.status(200).send("Enroll success");
 
         case 22:
-          _context8.next = 27;
+          _context8.next = 28;
           break;
 
         case 24:
           _context8.prev = 24;
           _context8.t0 = _context8["catch"](0);
-          res.status(500).send("Server error " + _context8.t0);
+          console.log(_context8.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 27:
+        case 28:
         case "end":
           return _context8.stop();
       }
@@ -901,15 +909,16 @@ function listReview(req, res, next) {
           res.redirect('back');
 
         case 17:
-          _context9.next = 22;
+          _context9.next = 23;
           break;
 
         case 19:
           _context9.prev = 19;
           _context9.t0 = _context9["catch"](0);
-          res.status(500).send("Server error " + _context9.t0);
+          console.log(_context9.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 22:
+        case 23:
         case "end":
           return _context9.stop();
       }
@@ -1018,15 +1027,16 @@ function followAccount(req, res, next) {
           res.status(200).send();
 
         case 30:
-          _context10.next = 35;
+          _context10.next = 36;
           break;
 
         case 32:
           _context10.prev = 32;
           _context10.t0 = _context10["catch"](0);
-          res.status(500).send("Server error " + _context10.t0);
+          console.log(_context10.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 35:
+        case 36:
         case "end":
           return _context10.stop();
       }
@@ -1109,15 +1119,16 @@ function likeImage(req, res, next) {
           res.status(200).send();
 
         case 24:
-          _context11.next = 29;
+          _context11.next = 30;
           break;
 
         case 26:
           _context11.prev = 26;
           _context11.t0 = _context11["catch"](0);
-          res.status(500).send("Server error " + _context11.t0);
+          console.log(_context11.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 29:
+        case 30:
         case "end":
           return _context11.stop();
       }
@@ -1187,15 +1198,16 @@ function searchArtwork(req, res, next) {
             admin: req.session.admin,
             notificationCount: data1[0].notificationsCount
           });
-          _context13.next = 10;
+          _context13.next = 11;
           break;
 
         case 7:
           _context13.prev = 7;
           _context13.t0 = _context13["catch"](0);
-          console.log("Error");
+          console.log(_context13.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 10:
+        case 11:
         case "end":
           return _context13.stop();
       }
@@ -1254,15 +1266,16 @@ function renderProfile(req, res, next) {
           }
 
         case 13:
-          _context14.next = 18;
+          _context14.next = 19;
           break;
 
         case 15:
           _context14.prev = 15;
           _context14.t0 = _context14["catch"](0);
-          res.status(500).send("Server error " + _context14.t0);
+          console.log(_context14.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 18:
+        case 19:
         case "end":
           return _context14.stop();
       }
@@ -1290,15 +1303,16 @@ app.get("/addNewArt", function _callee(req, res, next) {
             admin: req.session.admin,
             notificationCount: data1[0].notificationsCount
           });
-          _context15.next = 10;
+          _context15.next = 11;
           break;
 
         case 7:
           _context15.prev = 7;
           _context15.t0 = _context15["catch"](0);
-          res.status(500).send("Server error " + _context15.t0);
+          console.log(_context15.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 10:
+        case 11:
         case "end":
           return _context15.stop();
       }
@@ -1456,15 +1470,16 @@ function addArt(req, res, next) {
           res.redirect("/login");
 
         case 49:
-          _context16.next = 54;
+          _context16.next = 55;
           break;
 
         case 51:
           _context16.prev = 51;
           _context16.t2 = _context16["catch"](0);
-          res.status(500).send("Server error " + _context16.t2);
+          console.log(_context16.t2);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 54:
+        case 55:
         case "end":
           return _context16.stop();
       }
@@ -1597,15 +1612,16 @@ function unfollowAccount(req, res, next) {
         case 18:
           console.log("it worked");
           res.status(200).send("It worked");
-          _context18.next = 25;
+          _context18.next = 26;
           break;
 
         case 22:
           _context18.prev = 22;
           _context18.t0 = _context18["catch"](0);
-          res.status(500).send("Server error " + _context18.t0);
+          console.log(_context18.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 25:
+        case 26:
         case "end":
           return _context18.stop();
       }
@@ -1666,15 +1682,16 @@ function removeLike(req, res, next) {
 
         case 15:
           res.status(200).send("We did it");
-          _context19.next = 21;
+          _context19.next = 22;
           break;
 
         case 18:
           _context19.prev = 18;
           _context19.t0 = _context19["catch"](0);
-          res.status(500).send("Server error " + _context19.t0);
+          console.log(_context19.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 21:
+        case 22:
         case "end":
           return _context19.stop();
       }
@@ -1745,15 +1762,16 @@ function removeReview(req, res, next) {
           res.status(200).send("We did it");
 
         case 16:
-          _context20.next = 21;
+          _context20.next = 22;
           break;
 
         case 18:
           _context20.prev = 18;
           _context20.t0 = _context20["catch"](0);
-          res.status(500).send("Server error " + _context20.t0);
+          console.log(_context20.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 21:
+        case 22:
         case "end":
           return _context20.stop();
       }
@@ -1815,15 +1833,16 @@ function viewEnrolled(req, res, next) {
             id: data2[0]._id,
             notificationCount: data2[0].notificationsCount
           });
-          _context21.next = 22;
+          _context21.next = 23;
           break;
 
         case 19:
           _context21.prev = 19;
           _context21.t2 = _context21["catch"](0);
-          res.status(500).send("Server error " + _context21.t2);
+          console.log(_context21.t2);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 22:
+        case 23:
         case "end":
           return _context21.stop();
       }
@@ -1887,15 +1906,16 @@ function renderLogin(req, res, next) {
             id: data1[0]._id,
             notificationCount: data1[0].notificationsCount
           });
-          _context23.next = 11;
+          _context23.next = 12;
           break;
 
         case 8:
           _context23.prev = 8;
           _context23.t0 = _context23["catch"](0);
-          console.log("Error");
+          console.log(_context23.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 11:
+        case 12:
         case "end":
           return _context23.stop();
       }
@@ -1966,15 +1986,16 @@ function register(req, res, next) {
           res.redirect("/login");
 
         case 22:
-          _context24.next = 27;
+          _context24.next = 28;
           break;
 
         case 24:
           _context24.prev = 24;
           _context24.t0 = _context24["catch"](0);
-          res.status(500).send("Server error " + _context24.t0);
+          console.log(_context24.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 27:
+        case 28:
         case "end":
           return _context24.stop();
       }
@@ -2047,15 +2068,16 @@ function swapAccounts(req, res, next) {
           res.redirect("/login");
 
         case 24:
-          _context25.next = 29;
+          _context25.next = 30;
           break;
 
         case 26:
           _context25.prev = 26;
           _context25.t0 = _context25["catch"](0);
-          res.status(500).send("Server error " + _context25.t0);
+          console.log(_context25.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 29:
+        case 30:
         case "end":
           return _context25.stop();
       }
@@ -2081,15 +2103,16 @@ app.get("/", function _callee2(req, res, next) {
           res.render("welcome", {
             database: data1
           });
-          _context26.next = 13;
+          _context26.next = 14;
           break;
 
         case 10:
           _context26.prev = 10;
           _context26.t0 = _context26["catch"](0);
-          res.status(500).send("Server error " + _context26.t0);
+          console.log(_context26.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 13:
+        case 14:
         case "end":
           return _context26.stop();
       }
@@ -2118,15 +2141,16 @@ app.get("/addWorkshop", function _callee3(req, res, next) {
             id: req.session._id,
             notificationCount: data1[0].notificationsCount
           });
-          _context27.next = 11;
+          _context27.next = 12;
           break;
 
         case 8:
           _context27.prev = 8;
           _context27.t0 = _context27["catch"](0);
-          res.status(500).send("Server error " + _context27.t0);
+          console.log(_context27.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 11:
+        case 12:
         case "end":
           return _context27.stop();
       }
@@ -2227,15 +2251,16 @@ app.post("/addWorkshop", function _callee4(req, res, next) {
           res.redirect("/login");
 
         case 30:
-          _context28.next = 35;
+          _context28.next = 36;
           break;
 
         case 32:
           _context28.prev = 32;
           _context28.t2 = _context28["catch"](0);
-          res.status(500).send("Server error " + _context28.t2);
+          console.log(_context28.t2);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 35:
+        case 36:
         case "end":
           return _context28.stop();
       }
@@ -2261,15 +2286,16 @@ app.get("/viewers", function _callee5(req, res, next) {
             id: req.session._id,
             notificationCount: req.session.notificationCount
           });
-          _context29.next = 10;
+          _context29.next = 11;
           break;
 
         case 7:
           _context29.prev = 7;
           _context29.t0 = _context29["catch"](0);
-          res.status(500).send("Server error " + _context29.t0);
+          console.log(_context29.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 10:
+        case 11:
         case "end":
           return _context29.stop();
       }
@@ -2288,7 +2314,8 @@ app.get("/register", function (req, res, next) {
   try {
     res.render("register");
   } catch (error) {
-    res.status(500).send("Server error " + error);
+    console.log(error);
+    res.status(500).send("Internal server error. Please try again. ");
   }
 });
 
@@ -2297,7 +2324,8 @@ function admin(req, res, next) {
     res.status(200).send("Welcome to the admin page, " + req.session.username);
     return;
   } catch (error) {
-    res.status(500).send("Server error " + error);
+    console.log(error);
+    res.status(500).send("Internal server error. Please try again. ");
   }
 } //If the username and password match somebody in our database,
 // then create a new session ID and save it in the database.
@@ -2384,15 +2412,16 @@ function login(req, res, next) {
             res.status(401).send("Not authorized. Invalid password.");
           }
 
-          _context30.next = 25;
+          _context30.next = 26;
           break;
 
         case 22:
           _context30.prev = 22;
           _context30.t0 = _context30["catch"](0);
-          res.status(500).send("Server error " + _context30.t0);
+          console.log(_context30.t0);
+          res.status(500).send("Internal server error. Please try again. ");
 
-        case 25:
+        case 26:
         case "end":
           return _context30.stop();
       }
