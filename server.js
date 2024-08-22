@@ -10,7 +10,7 @@ console.log("Beginning import");
 import { MongoClient, ObjectId } from "mongodb";
 console.log("Successfully imported mongodb");
 // Replace the uri string with your MongoDB deployment's connection string.
-const uri = "mongodb://129.0.0.1:27017/";
+const uri = "mongodb://127.0.0.1:27017/";
 // Experimental code that can be used to error check.
 const client = new MongoClient(uri);
 // apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that the error message will still get thrown. Need to check if it's coming from the functions itself
@@ -77,7 +77,8 @@ async function  viewFollowing(req, res, next) {
 	}
 }
 	catch(error){
-		res.status(500).send("Server error " + error);
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");
 	}
 	
 }
@@ -119,7 +120,8 @@ async function  getSearchResults(req, res, next) {
 	res.render("searchResults",  {database:data1, id: req.session._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data2[0].notificationsCount, page : req.query.page, totalPage:totalPages, nameOfArtist : req.query.nameOfArtist, title:req.query.title, category:req.query.category,nextPage:pageAdd, prevPage:pageSub })
 }
 catch(error){
-	res.status(500).send("Server error " + error);
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");
 }
 }
 app.post("/findSearchResults", findSearchResults);
@@ -160,8 +162,8 @@ async function  findSearchResults(req, res, next) {
 	res.render("searchResults",  {database:data1, id: req.session._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data2[0].notificationsCount, page : req.query.page, totalPage:totalPages, nameOfArtist : req.body.nameOfArtist, title:req.body.title, category:req.body.category, nextPage:pageAdd, prevPage:pageSub })
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");
 }
 }
 // Here, we force it to call itself again and again.
@@ -176,8 +178,8 @@ async function  searchMedium(req, res, next) {
 	res.render("searchMedium",  {database:data1, id: req.session._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data2[0].notificationsCount, page :  req.query.page, nextPage:pageAdd, prevPage:pageSub, medium:req.params.medium})
 	}
 	catch(error){
-		res.status(500).send("Server error " + error);
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 // Here, we force it to call itself again and again.
 app.get("/searchCategory/:category", searchCategory);
@@ -191,8 +193,8 @@ async function  searchCategory(req, res, next) {
 	res.render("searchCategory",  {database:data1, id: req.session._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data2[0].notificationsCount, page :  req.query.page, nextPage:pageAdd, prevPage:pageSub, category:req.params.category})
 	}
 	catch(error){
-		res.status(500).send("Server error " + error);
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 
 
@@ -218,8 +220,8 @@ async function  viewFollowers(req, res, next) {
 	}
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-}
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 }
 app.get("/artwork/:userId", renderArtwork);
 async function  renderArtwork(req, res, next) {
@@ -238,8 +240,8 @@ async function  renderArtwork(req, res, next) {
 	}
 }
 	catch(error){
-		res.status(500).send("Server error " + error);
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 	
 }
 app.put("/enroll/:title/:user", enroll);
@@ -273,8 +275,8 @@ async function  enroll(req, res, next) {
 	}
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-}
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 	
 
 
@@ -300,8 +302,8 @@ async function  listReview(req, res, next) {
 	}
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-}
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 
 }
 
@@ -340,8 +342,8 @@ async function  followAccount(req, res, next) {
 	}
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-}
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 }
 app.put("/likeImage/:userId", likeImage);
 async function  likeImage(req, res, next) {
@@ -373,8 +375,8 @@ async function  likeImage(req, res, next) {
 	}
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-}
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 }
 app.get("/viewLikedandReviewed", viewLikedAndReviewed);
 async function  viewLikedAndReviewed(req, res, next) {
@@ -393,8 +395,8 @@ async function  searchArtwork(req, res, next) {
 	res.render("search",  {database:data1, id: req.session._id, accountType:req.session.accountType, admin:req.session.admin,notificationCount:data1[0].notificationsCount });
 	}
 	catch(error){
-		console.log("Error")
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 app.get("/profile/:id", renderProfile);
 async function  renderProfile(req, res, next) {
@@ -416,8 +418,8 @@ async function  renderProfile(req, res, next) {
 	}
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-}
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 	
 	
 }
@@ -428,8 +430,8 @@ app.get("/addNewArt", async function(req, res, next) {
     res.render("addNewArt",{id: req.session._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data1[0].notificationsCount});
 	}
 	catch(error){
-		res.status(500).send("Server error " + error);
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
   });
 
 app.post("/addNewArt", addArt);
@@ -478,8 +480,8 @@ async function  addArt(req, res, next) {
 	}
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-}
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 }
 app.get("/inbox", inbox);
 async function inbox(req, res, next){
@@ -509,8 +511,8 @@ async function  unfollowAccount(req, res, next) {
 	res.status(200).send("It worked");
 	}
 	catch(error){
-		res.status(500).send("Server error " + error);
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 app.delete("/removeLike/:title", removeLike);
 async function  removeLike(req, res, next) {
@@ -531,8 +533,8 @@ async function  removeLike(req, res, next) {
 	res.status(200).send("We did it");
 	}
 	catch(error){
-		res.status(500).send("Server error " + error);
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 app.delete("/removeReview/:title/:user", removeReview);
 async function  removeReview(req, res, next) {
@@ -551,8 +553,8 @@ async function  removeReview(req, res, next) {
 	}
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-}
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 	
 
 
@@ -575,8 +577,8 @@ async function  viewEnrolled(req, res, next) {
 
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-}
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 
 
 }
@@ -598,8 +600,8 @@ async function renderLogin(req, res, next){
 	res.status(200).render("login", {name: data1[0].username, accountType: data1[0].accountType, admin: data1[0].admin, id: data1[0]._id , notificationCount:data1[0].notificationsCount});
 	}
 	catch(error){
-		console.log("Error");
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 async function register(req, res, next){
 	try{
@@ -632,8 +634,8 @@ async function register(req, res, next){
 	}
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-}
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 }
 async function swapAccounts(req, res, next) {
 	try{
@@ -663,8 +665,8 @@ async function swapAccounts(req, res, next) {
  	
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-}
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 }
 app.get("/", async function(req, res, next){
 	try{
@@ -675,8 +677,8 @@ app.get("/", async function(req, res, next){
 	res.render("welcome", {database:data1});
 	}
 	catch(error){
-		res.status(500).send("Server error " + error);
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 	
 })
 app.get("/addWorkshop", async function(req, res, next){
@@ -686,8 +688,8 @@ app.get("/addWorkshop", async function(req, res, next){
 	res.render("workshops", {database:data1, accountType:req.session.accountType, admin:req.session.admin, id: req.session._id, notificationCount: data1[0].notificationsCount});
 	}
 	catch(error){
-		res.status(500).send("Server error " + error);
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 })
 app.post("/addWorkshop", async function(req, res, next){
 	try{
@@ -718,8 +720,8 @@ app.post("/addWorkshop", async function(req, res, next){
 	}
 }
 catch(error){
-	res.status(500).send("Server error " + error);
-}
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 	})
 app.get("/viewers", async function(req, res, next){
 	try{
@@ -727,8 +729,8 @@ app.get("/viewers", async function(req, res, next){
 	res.render("viewers", {database:data1, accountType:req.session.accountType, admin:req.session.admin, id: req.session._id, notificationCount: req.session.notificationCount});
 	}
 	catch(error){
-		res.status(500).send("Server error " + error);
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 })
 app.get("/loginScreen", (req, res, next) => {
 	try{
@@ -744,8 +746,8 @@ app.get("/loginScreen", (req, res, next) => {
     res.render("register");
 	}
 	catch(error){
-		res.status(500).send("Server error " + error);
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 });
 function admin(req, res, next) {
 	try{
@@ -753,8 +755,8 @@ function admin(req, res, next) {
 	return;
 	}
 	catch(error){
-		res.status(500).send("Server error " + error);
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 
 //If the username and password match somebody in our database,
@@ -802,8 +804,8 @@ async function login(req, res, next) {
 	}
 	}
 	catch(error){
-		res.status(500).send("Server error " + error);
-	}
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 
 async function logout(req, res, next) {
