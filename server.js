@@ -9,15 +9,15 @@ app.set("view engine", "pug");
 console.log("Beginning import");
 import { MongoClient, ObjectId } from "mongodb";
 console.log("Successfully imported mongodb");
-
 // Replace the uri string with your MongoDB deployment's connection string.
 const uri = "mongodb://127.0.0.1:27017/";
+// Experimental code that can be used to error check.
 const client = new MongoClient(uri);
 // apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that the error message will still get thrown. Need to check if it's coming from the functions itself
 client.on('error', function(err){
 	console.log(err.message);
 	
-	//throw new Error('Aborting execution');
+	throw new Error('Aborting execution');
 });
 console.log("Successfully connected to mongodb");
 const database = client.db("gallery");
@@ -59,6 +59,7 @@ app.get("/swapAccounts", swapAccounts)
 app.post("/register", register);
 app.get("/viewFollowing/:userId", viewFollowing);
 async function  viewFollowing(req, res, next) {
+	try{
 	let id = req.params.userId;
 	if(id.length != 24){
 		res.status(406).send("Not a proper user ID");
@@ -74,11 +75,17 @@ async function  viewFollowing(req, res, next) {
 			res.render("following", {database:data1, id: req.session._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data2[0].notificationsCount});
 		}
 	}
+}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");
+	}
 	
 }
 // Essentially, we are calling itself again and again, just with updated page numbers, and thus, updated artwork
 app.get("/findSearchResults", getSearchResults);
 async function  getSearchResults(req, res, next) {
+	try{
 	let data1 = [];
 	// I apologize for the YandereDev coding practice, but it had to be done.
 	if(req.query.nameOfArtist == "" &&  req.query.title == "" &&  req.query.category == ""){
@@ -112,8 +119,14 @@ async function  getSearchResults(req, res, next) {
 	let pageSub = pageValue - 1;
 	res.render("searchResults",  {database:data1, id: req.session._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data2[0].notificationsCount, page : req.query.page, totalPage:totalPages, nameOfArtist : req.query.nameOfArtist, title:req.query.title, category:req.query.category,nextPage:pageAdd, prevPage:pageSub })
 }
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");
+}
+}
 app.post("/findSearchResults", findSearchResults);
 async function  findSearchResults(req, res, next) {
+	try{
 	let data1 = [];
 	// I apologize for the YandereDev coding practice, but it had to be done.
 	if(req.body.nameOfArtist == "" &&  req.body.title == "" &&  req.body.category == ""){
@@ -148,31 +161,47 @@ async function  findSearchResults(req, res, next) {
 	let pageSub = pageValue - 1;
 	res.render("searchResults",  {database:data1, id: req.session._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data2[0].notificationsCount, page : req.query.page, totalPage:totalPages, nameOfArtist : req.body.nameOfArtist, title:req.body.title, category:req.body.category, nextPage:pageAdd, prevPage:pageSub })
 }
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");
+}
+}
 // Here, we force it to call itself again and again.
 app.get("/searchMedium/:medium", searchMedium);
 async function  searchMedium(req, res, next) {
+	try{
 	const data1 = await galleryCollection.find({"Medium":req.params.medium}).toArray();
 	const data2 = await  accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 	let pageValue = parseInt(req.query.page);
 	let pageAdd = pageValue + 1;
 	let pageSub = pageValue - 1;
 	res.render("searchMedium",  {database:data1, id: req.session._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data2[0].notificationsCount, page :  req.query.page, nextPage:pageAdd, prevPage:pageSub, medium:req.params.medium})
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 // Here, we force it to call itself again and again.
 app.get("/searchCategory/:category", searchCategory);
 async function  searchCategory(req, res, next) {
+	try{
 	const data1 = await galleryCollection.find({"Category":req.params.category}).toArray();
 	const data2 = await  accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 	let pageValue = parseInt(req.query.page);
 	let pageAdd = pageValue + 1;
 	let pageSub = pageValue - 1;
 	res.render("searchCategory",  {database:data1, id: req.session._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data2[0].notificationsCount, page :  req.query.page, nextPage:pageAdd, prevPage:pageSub, category:req.params.category})
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 
 
 // Similar to viewFollowing.
 app.get("/viewFollowers/:userId", viewFollowers);
 async function  viewFollowers(req, res, next) {
+	try{
 	let id = req.params.userId;
 	if(id.length != 24){
 		res.status(406).send("Not a proper user ID");
@@ -190,8 +219,13 @@ async function  viewFollowers(req, res, next) {
 
 	}
 }
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
+}
 app.get("/artwork/:userId", renderArtwork);
 async function  renderArtwork(req, res, next) {
+	try{
 	console.log(req.params);
 	const data1 = await  galleryCollection.find({"Title":req.params.userId}).toArray();
 	if(data1.length != 1){
@@ -204,10 +238,15 @@ async function  renderArtwork(req, res, next) {
 		console.log(data2);
 		res.render("artProfile", {database:data1,accountId:data2, id: req.session._id, accountType:req.session.accountType, admin:req.session.admin,notificationCount: data3[0].notificationsCount });
 	}
+}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 	
 }
 app.put("/enroll/:title/:user", enroll);
 async function  enroll(req, res, next) {
+	try{
 	//user who has workshop
 	const data1 = await accountInfo.find({"_id":new ObjectId(req.params.user)}).toArray();
 	//user that is enrolling
@@ -234,6 +273,10 @@ async function  enroll(req, res, next) {
 		await accountInfo.updateOne({"_id":new ObjectId(req.session._id)},{$set: {"notificationsCount":data2[0].notificationsCount}}); 
 		res.status(200).send("Enroll success");
 	}
+}
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 	
 
 
@@ -245,6 +288,7 @@ async function  enroll(req, res, next) {
 
 app.post("/leaveReview/:id", listReview);
 async function  listReview(req, res, next) {
+	try{
 	let reviewString = req.body.review;
 	const data1 = await  galleryCollection.find({"_id":new ObjectId(req.params.id)}).toArray();
 	const data2 = await accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
@@ -256,12 +300,17 @@ async function  listReview(req, res, next) {
 		await accountInfo.updateOne({"_id":new ObjectId(req.session._id)},{$push: {"artWorkReviewed":{ "artWorkTitle":data1[0].Title,"review": reviewString}}}); 
 		res.redirect('back');
 	}
+}
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 
 }
 
 
 app.put("/followAccount/:userId", followAccount);
 async function  followAccount(req, res, next) {
+	try{
 	let followedAccountId = req.params.userId;
 	console.log(followedAccountId);
 	// the following account
@@ -292,8 +341,13 @@ async function  followAccount(req, res, next) {
 		res.status(200).send();
 	}
 }
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
+}
 app.put("/likeImage/:userId", likeImage);
 async function  likeImage(req, res, next) {
+	try{
 	let followedAccountId = req.params.userId;
 	console.log(followedAccountId);
 	// the  account who like this
@@ -320,18 +374,33 @@ async function  likeImage(req, res, next) {
 		res.status(200).send();
 	}
 }
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
+}
 app.get("/viewLikedandReviewed", viewLikedAndReviewed);
 async function  viewLikedAndReviewed(req, res, next) {
+	try{
 	const data1 = await  accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 	res.render("artist",{database:data1[0], id: req.session._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data1[0].notificationsCount});
+	}
+	catch(error){
+		console.log("Error");
+	}
 }
 app.get("/searchArtwork", searchArtwork);
 async function  searchArtwork(req, res, next) {
+	try{
 	const data1 = await accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 	res.render("search",  {database:data1, id: req.session._id, accountType:req.session.accountType, admin:req.session.admin,notificationCount:data1[0].notificationsCount });
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 app.get("/profile/:id", renderProfile);
 async function  renderProfile(req, res, next) {
+	try{
 	let id = req.params.id;
 	if(id.length != 24){
 		res.status(400).send("Faulty request");
@@ -347,17 +416,27 @@ async function  renderProfile(req, res, next) {
 			res.render("profile", {database:data1, id: req.session._id, userId: data1[0]._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data2[0].notificationsCount});
 		}
 	}
+}
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 	
 	
 }
 
 app.get("/addNewArt", async function(req, res, next) {
+	try{
 	let data1 = await accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
     res.render("addNewArt",{id: req.session._id, accountType:req.session.accountType, admin:req.session.admin, notificationCount:data1[0].notificationsCount});
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
   });
 
 app.post("/addNewArt", addArt);
 async function  addArt(req, res, next) {
+	try{
 	let data1 = await accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 	let artistName = data1[0].username;
 	let title = req.body.title;
@@ -399,17 +478,26 @@ async function  addArt(req, res, next) {
 		}
 		res.redirect("/login");
 	}
-	
+}
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 }
 app.get("/inbox", inbox);
 async function inbox(req, res, next){
+	try{
 	const data1 = await accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 	data1[0].notificationsCount  = 0;
 	await accountInfo.updateOne({"_id":new ObjectId(req.session._id)},{$set: {"notificationsCount":data1[0].notificationsCount}}); 
 	res.status(200).render("notifications", {database: data1[0], name: data1[0].username, accountType: data1[0].accountType, admin: data1[0].admin, id: data1[0]._id , notificationCount:data1[0].notificationsCount});
+	}
+	catch(error){
+		console.log("error");
+	}
 }
 app.delete("/unfollowAccount/:accountId", unfollowAccount);
 async function  unfollowAccount(req, res, next) {
+	try{
 	let data1 = await accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 	console.log(data1);
 	let data2 = await accountInfo.find({"_id":new ObjectId(req.params.accountId)}).toArray();
@@ -421,9 +509,14 @@ async function  unfollowAccount(req, res, next) {
 	await accountInfo.updateOne({"_id":new ObjectId(req.params.accountId)},{$set: {"followersCount":data2[0].followersCount}}); 
 	console.log("it worked");
 	res.status(200).send("It worked");
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 app.delete("/removeLike/:title", removeLike);
 async function  removeLike(req, res, next) {
+	try{
 	let title = req.params.title;
 	// the  account who like this
  	const data1 = await  accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
@@ -438,9 +531,14 @@ async function  removeLike(req, res, next) {
 	await galleryCollection.updateOne({"Title":title},{$set: {"Likes":data2[0].Likes}}); 
 
 	res.status(200).send("We did it");
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 app.delete("/removeReview/:title/:user", removeReview);
 async function  removeReview(req, res, next) {
+	try{
 	// the  account who like this
  	const data1 = await  accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 	const data2 = await galleryCollection.find({"Title":req.params.title}).toArray();
@@ -453,12 +551,17 @@ async function  removeReview(req, res, next) {
 		res.status(200).send("We did it");
 
 	}
+}
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 	
 
 
 }
 app.get("/viewEnrolled/:title/:user", viewEnrolled);
 async function  viewEnrolled(req, res, next) {
+	try{
 	// the  account who like this
  	const data1 = await  accountInfo.find({"_id":new ObjectId(req.params.user)}).toArray();
 	let count = 0;
@@ -472,7 +575,10 @@ async function  viewEnrolled(req, res, next) {
 	const data2 = await  accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 	res.status(200).render("workshop", {database: data1[0].workshops[count], accountType: data2[0].accountType, admin: data2[0].admin, id: data2[0]._id , notificationCount:data2[0].notificationsCount});
 
-	
+}
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 
 
 }
@@ -488,11 +594,17 @@ async function auth(req, res, next) {
 	next();
 }
 async function renderLogin(req, res, next){
+	try{
+	console.log("Logging in");
 	const data1 = await accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 	res.status(200).render("login", {name: data1[0].username, accountType: data1[0].accountType, admin: data1[0].admin, id: data1[0]._id , notificationCount:data1[0].notificationsCount});
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
-
 async function register(req, res, next){
+	try{
 	let username = req.body.username;
 	let password = req.body.password;
 	let newAccount = {"username":username, "password":password, "admin":"false", "accountType":"patron","followersCount":0,
@@ -520,9 +632,13 @@ async function register(req, res, next){
 		res.redirect("/login");
 
 	}
-	
+}
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 }
 async function swapAccounts(req, res, next) {
+	try{
 	console.log("swapping accountType");
 	console.log(req.session._id);
 	const data1 = await accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
@@ -545,21 +661,38 @@ async function swapAccounts(req, res, next) {
 		res.redirect("/login");
 	}
 	
+	
  	
 }
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
+}
 app.get("/", async function(req, res, next){
+	try{
 	console.log("Another trace to main. This is a check to ensure this gets this function, and if not, we throw an error");
 	const data1 = await galleryCollection.find({}).limit(5).toArray();
 	console.log(data1);
 	console.log("Welcome to the art gallery. Enjoy your time here");
 	res.render("welcome", {database:data1});
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
+	
 })
 app.get("/addWorkshop", async function(req, res, next){
+	try{
 	const data1 = 	await accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 	console.log(data1);
 	res.render("workshops", {database:data1, accountType:req.session.accountType, admin:req.session.admin, id: req.session._id, notificationCount: data1[0].notificationsCount});
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 })
 app.post("/addWorkshop", async function(req, res, next){
+	try{
 	let data1 = await accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 	let newTitle = req.body.workshopTitle;
 	let veri = false;
@@ -585,26 +718,52 @@ app.post("/addWorkshop", async function(req, res, next){
 		}
 		res.redirect("/login");
 	}
+}
+catch(error){
+	console.log(error);
+	res.status(500).send("Internal server error. Please try again. ");}
 	})
 app.get("/viewers", async function(req, res, next){
+	try{
 	const data1 = await accountInfo.find({}).toArray();
 	res.render("viewers", {database:data1, accountType:req.session.accountType, admin:req.session.admin, id: req.session._id, notificationCount: req.session.notificationCount});
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 })
 app.get("/loginScreen", (req, res, next) => {
+	try{
+		console.log("Beginning test");
     res.render("loginScreen");
+	}
+	catch(error){
+		res.status(500).send("Server error " + error);
+	}
   });
   app.get("/register", (req, res, next) => {
+	try{
     res.render("register");
-  });
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
+});
 function admin(req, res, next) {
+	try{
 	res.status(200).send("Welcome to the admin page, " + req.session.username);
 	return;
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 
 //If the username and password match somebody in our database,
 // then create a new session ID and save it in the database.
 //That session ID will be associated with the requesting user.
 async function login(req, res, next) {
+	try{
 	if (req.session.loggedin) {
 		const data1= await accountInfo.find({"_id":new ObjectId(req.session._id)}).toArray();
 		res.status(200).render("login", {name: req.session.username, accountType: req.session.accountType, admin:req.session.admin, id: req.session._id, notificationCount: data1[0].notificationsCount});
@@ -643,6 +802,10 @@ async function login(req, res, next) {
 	} else {
 		res.status(401).send("Not authorized. Invalid password.");
 	}
+	}
+	catch(error){
+		console.log(error);
+		res.status(500).send("Internal server error. Please try again. ");	}
 }
 
 async function logout(req, res, next) {
@@ -656,6 +819,7 @@ async function logout(req, res, next) {
 		res.status(401).send("You cannot log out because you aren't logged in.");
 	}
 }
+
 
 app.listen(3000);
 console.log("Server listening on port 3000");
