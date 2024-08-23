@@ -608,7 +608,7 @@ var accounts = [{
   "workshops": []
 }];
 // Replace the uri string with your MongoDB deployment's connection string.
-var uri = "mongodb://127.0.0.1:27017/"; // Create a new client and connect to MongoDB
+var uri = "mongodb+srv://".concat(process.env.USERNAME, ":").concat(process.env.PASSWORD, "@").concat(process.env.URI); // Create a new client and connect to MongoDB
 
 var client = new _mongodb.MongoClient(uri);
 

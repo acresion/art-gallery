@@ -613,7 +613,7 @@ let accounts = [{
 
 import {MongoClient} from "mongodb";
 // Replace the uri string with your MongoDB deployment's connection string.
-const uri = "mongodb://127.0.0.1:27017/";
+const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.URI}`;
 // Create a new client and connect to MongoDB
 const client = new MongoClient(uri);
 async function run() {

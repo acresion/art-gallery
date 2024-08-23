@@ -27,3 +27,19 @@ spec:
             memory: 1Gi        
         ports:
         - containerPort: 3000
+        env:
+        - name: GALLERY_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: art-gallery-secret
+            key: username
+        - name: GALLERY_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: art-gallery-secret
+            key: password
+        - name: GALLERY_URI
+        valueFrom:
+          secretKeyRef:
+            name: art-gallery-secret
+            key: uri
