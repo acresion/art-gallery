@@ -4,7 +4,7 @@ import session from 'cookie-session';
 const app = express();
 app.set("views", "views");
 app.use(express.static("views"));
-app.set("view engine", "pug");
+app.set("view engine", "pug"); 
 // First task: Use error handling to report error of faulty connection instead of crashing. 
 console.log("Beginning import");
 import { MongoClient, ObjectId } from "mongodb";
