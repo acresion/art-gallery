@@ -4,13 +4,13 @@ import session from 'cookie-session';
 const app = express();
 app.set("views", "views");
 app.use(express.static("views"));
-app.set("view engine", "pug");
+app.set("view engine", "pug"); 
 // First task: Use error handling to report error of faulty connection instead of crashing. 
 console.log("Beginning import");
 import { MongoClient, ObjectId } from "mongodb";
 console.log("Successfully imported mongodb");
 // Replace the uri string with your MongoDB deployment's connection string.
-const uri = "mongodb://127.0.0.1:27017/";
+const uri = `mongodb+srv://${process.env.GALLERY_USERNAME}:${process.env.GALLARY_PASSWORD}@gallery.fjssc.mongodb.net/`;
 // Experimental code that can be used to error check.
 const client = new MongoClient(uri);
 // apparently, this is not working as expected. This does connect as normal, but there is a minor caveat that the error message will still get thrown. Need to check if it's coming from the functions itself
