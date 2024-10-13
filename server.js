@@ -11,8 +11,7 @@ import { MongoClient, ObjectId } from "mongodb";
 console.log("Successfully imported mongodb");
 // Replace the uri string with your MongoDB deployment's connection string.
 const uri = `mongodb+srv://${process.env.GALLERY_USERNAME}:${process.env.GALLERY_PASSWORD}@gallery.fjssc.mongodb.net/`;
-console.log(process.env.GALLERY_USERNAME);
-console.log(process.env.GALLERY_PASSWORD);
+
 
 // Experimental code that can be used to error check.
 const client = new MongoClient(uri);
